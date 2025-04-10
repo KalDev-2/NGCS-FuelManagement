@@ -1,0 +1,169 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.Role
+@{
+    var applications = (IEnumerable<NEXT_BMS.Models.Application>)ViewBag.Applications;
+}
+<form asp-action="Edit">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @Html.HiddenFor(model => model.Id)
+            <div class="form-group">
+                @Html.Raw(Localization.Get("Name"))
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="form-group">
+                @Html.Raw(Localization.Get("IsActive"))
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive)
+            </div>
+            <label>
+                @Html.Raw(Localization.Get("Select Menus"))
+            </label>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                @foreach (var application in applications.OrderBy(x => x.Acronym))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" id="@application.Id-tab" data-toggle="tab" href="#app_@application.Id" role="tab" aria-controls="@application.Name" aria-selected="true">
+                            <i class="@application.Icon"></i>
+                            @application.Acronym
+                        </a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (var application in applications.OrderBy(x => x.Acronym))
+                {
+                    var menuCategories = application.MenuCategories.Where(x => x.IsActive == true && x.IsDeleted == false && x.Menus.Any(m => x.IsActive));
+                    <div class="tab-pane" id="app_@application.Id" role="tabpanel" aria-labelledby="@application.Id-tab">
+                        @foreach (var category in menuCategories)
+                        {
+                            var menus = category.Menus.Where(x => x.IsDeleted == false);
+                            var controllers = menus.Select(x => x.Controller).Distinct();
+                            <h3>
+                                @category.Name
+                            </h3>
+                            <div class="card-group-control card-group-control-right">
+                                @foreach (var controller in controllers)
+                                {
+                                    var gid = "g_" + category.Id + "_" + controller;
+                                    <div class="card mb-2">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title">
+                                                <a class="text-default collapsed" data-toggle="collapse" href="#@gid">
+                                                    <i class="icon-menu7 mr-2 text-slate"></i> @controller
+                                                </a>
+                                            </h6>
+                                        </div>
+                                        <div id="@gid" class="collapse">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    @foreach (var menu in menus.Where(x => x.Controller == controller))
+                                                    {
+                                                        string check = "unchecked";
+                                                        if (Model.RolesMenus.Any(x => x.MenuId == menu.Id))
+                                                        {
+                                                            check = "checked";
+                                                        }
+                                                        <div class="custom-control custom-checkbox col-md-6">
+                                                            <input type="checkbox" class="custom-control-input" name="M_@menu.Controller" id="M_@menu.Id" value="@menu.Id" @check>
+                                                            <label for="M_@menu.Id" class="custom-control-label">@menu.Title</label>
+                                                        </div>
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" name="@controller" class="custom-control-input selectAll" id="selecctall_M_@gid">
+                                                    <label class="custom-control-label" for="selecctall_M_@gid">Select all fuctions</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</form>
+ @section Scripts {
+    <script type="text/javascript">
+        $(this).submit(function (e) {
+            e.preventDefault();
+            var selected = [];
+            $('input:checked').each(function () {
+                if (!isNaN($(this).val())) {
+                    selected.push($(this).val());
+                }
+            });
+
+            var fd = new FormData();
+            fd.append('name', $("#Name").val());
+            fd.append('Id', $("#Id").val());
+            fd.append('IsActive', $("#IsActive").val());
+            fd.append('selectedMenus', selected);
+
+
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("Edit", "Roles")',
+                type: 'POST',
+                data: fd,
+                cache: false,
+                async: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                complete: function (data, textStatus, jqXHR) {
+                    window.location = '/Roles/';
+                }
+            });
+        });
+
+        $(document).ready(function () {
+
+            $(".selectAll").change(function () {
+                $("input[name='M_" + $(this).attr('name') + "']").not(this).prop('checked', this.checked);
+            });
+
+            $(".checkSingle").click(function () {
+                if ($(this).is(":checked")) {
+                    var isAllChecked = 0;
+                    $("input[name='M_" + $(this).attr('name') + "']").each(function () {
+                        if (!this.checked)
+                            isAllChecked = 1;
+                    });
+
+                    if (isAllChecked == 0) {
+                        $("#selecctall_" + $(this).attr('name')).prop("checked", true);
+                    }
+                }
+                else {
+                    $("#selecctall_" + $(this).attr('name')).prop("checked", false);
+                }
+            });
+        });
+
+    </script>
+}
+

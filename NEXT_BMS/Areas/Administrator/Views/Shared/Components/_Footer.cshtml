@@ -1,0 +1,37 @@
+﻿@using Insya.Localization
+@using Microsoft.Extensions.Options
+@using NEXT_BMS.ViewModels;
+@inject IOptions<AppConfig> AppConfig
+@inject IHtmlHelper Html
+
+<div class="navbar navbar-expand-lg navbar-light ftr">
+    <div class="text-center d-lg-none w-100">
+        <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+            <i class="icon-unfold mr-2"></i>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-footer">
+        <span class="navbar-text">
+            &copy; 2020. <a href="#">ERP</a> by <a href="#" target="_blank">@Html.Raw(Localization.Get(AppConfig.Value.FooterNote)) </a>
+        </span>
+        <ul class="navbar-nav ml-lg-auto">
+            <li class="nav-item"><a href="@Url.Action("Create","Feedbacks")" class="navbar-nav-link"><i class="icon-pen6 mr-2"></i> @Html.Raw(Localization.Get("Feedback")) </a></li>
+            <li class="nav-item"><a href="#" class="navbar-nav-link" target="_blank"><i class="icon-comment-discussion mr-2"></i> @Html.Raw(Localization.Get("support")) </a></li>
+            <li class="nav-item"><a href="#" class="navbar-nav-link" target="_blank"><i class="icon-file-text2 mr-2"></i> @Html.Raw(Localization.Get("docs"))</a></li>
+        </ul>
+    </div>
+</div>
+
+<script src="~/Content/global/js/main/jquery.min.js"></script>
+<script src="~/Content/global/js/main/bootstrap.bundle.min.js"></script>
+<script src="~/Content/global/js/plugins/loaders/blockui.min.js"></script>
+<script src="~/Content/global/js/plugins/ui/ripple.min.js"></script>
+<script src="~/Content/global/js/plugins/notifications/pnotify.min.js"></script>
+<script src="~/Content/global/js/plugins/forms/styling/uniform.min.js"></script>
+<script src="~/Content/global/js/plugins/ui/moment/moment.min.js"></script>
+<script src="~/Content/global/js/plugins/media/fancybox.min.js"></script>
+<script src="~/Content/js/app.js"></script>
+<script src="~/Content/global/js/demo_pages/layout_fixed_sidebar_custom.js"></script>
+<script src="~/Content/global/js/plugins/ui/sticky.min.js"></script>
+<script src="~/Content/global/js/demo_pages/components_scrollspy.js"></script>
+<script src="~/Content/js/layoutCodes.js"></script>

@@ -1,0 +1,183 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@using Insya.Localization;
+@@model @Model.ViewDataTypeName
+@{
+    if (Model.IsPartialView)
+    {
+@:@@{
+    @:ViewData["id"]=@@Model.Id
+@:}
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        { 
+@:@@{
+    @:Layout = "@Model.LayoutPageFile";
+@:}
+        }
+
+    }
+    else
+    {
+@:@@{
+    @:Layout = null;
+@:}
+@:<!DOCTYPE html>
+@:<html>
+    @:<head>
+        @:<meta name="viewport" content="width=device-width" />
+        @:<title>@Model.ViewName</title>
+    @:</head>
+    @:<body>
+        }
+@:<form asp-action="@Model.ViewName">
+    @:@@await Html.PartialAsync("Controls/_Common")
+    @:<div class="card">
+        @:<div class="card-header bg-light header-elements-inline">
+            @:<h5 class="card-title">
+                @:@@Html.Raw(Localization.Get(ViewData["action"].ToString())) | @@Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            @:</h5>
+            @:<div class="header-elements">
+                @:<div class="list-icons">
+                    @:<a class="list-icons-item" data-action="collapse"></a>
+                    @:<a class="list-icons-item" data-action="reload"></a>
+                    @:<a class="list-icons-item" data-action="remove"></a>
+                @:</div>
+            @:</div>
+        @:</div>
+        @:<div class="card-body">
+            @:<div class="row">
+                @:<div class="col-md-12">
+                    @:<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    foreach (PropertyMetadata property in Model.ModelMetadata.Properties)
+                    {
+                        if (property.IsPrimaryKey)
+                        {
+                    @:<input type="hidden" asp-for="@property.PropertyName" />
+                            continue;
+                        }
+
+                        if (property.Scaffold)
+                        {
+                            if (property.IsReadOnly)
+                            {
+                                continue;
+                            }
+
+                            if (property.IsForeignKey)
+                            {
+                    @:<div class="form-group">
+                        @:<label asp-for="@property.PropertyName" class="form-label"></label>
+                        @:<select asp-for="@property.PropertyName" class="form-control select" asp-items="ViewBag.@property.PropertyName"><option value="">---Select---</option></select>
+                        @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                    @:</div>
+                                continue;
+                            }
+
+                            bool isCheckbox = property.TypeName.Equals("System.Boolean");
+                            if (isCheckbox)
+                            {
+                    @:<div class="mb-3 form-check">
+                        @:<label class="form-check-label">
+                            @:<input class="form-check-input" asp-for="@property.PropertyName" /> @@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                        @:</label>
+                    @:</div>
+                            }
+                            else if (property.IsEnum && !property.IsEnumFlags)
+                            {
+                    @:<div class="form-group">
+                        @:<label asp-for="@property.PropertyName" class="form-label"></label>
+                        @:<select asp-for="@property.PropertyName" class="form-control select"><option value="">---Select---</option></select>
+                        @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                    @:</div>
+                            }
+                            else if (property.IsMultilineText)
+                            {
+                    @:<div class="form-group">
+                        @:<label asp-for="@property.PropertyName" class="form-label"></label>
+                        @:<textarea asp-for="@property.PropertyName" class="form-control"></textarea>
+                        @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                    @:</div>
+                            }
+                            else
+                            {
+                    @:<div class="form-group">
+                        @:<label asp-for="@property.PropertyName" class="form-label"></label>
+                        @:<input asp-for="@property.PropertyName" class="form-control" autocomplete="off" />
+                        @:<span asp-validation-for="@property.PropertyName" class="text-danger"></span>
+                    @:</div>
+                            }
+                        }
+                        // Ideally we shouldn't be here  but if the user marks the foreign key as [ScaffoldColumn(false)], we want to atleast try to make it work.
+                        else if (property.IsForeignKey)
+                        {
+                    @:<input type="hidden" asp-for="@property.PropertyName" />
+                            continue;
+                        }
+                    }
+                @:</div>
+            @:</div>
+        @:</div>
+        @:<div class="card-footer"></div>
+    @:</div>
+@:</form>
+        if (Model.ReferenceScriptLibraries)
+{
+@:@@section Scripts {
+    @foreach (var property in Model.ModelMetadata.Properties)
+    {
+        if (property.PropertyName.ToLower().Contains("date"))
+        {
+    @:@@{await Html.RenderPartialAsync("js/_date");}
+            break;
+        }
+    }
+    @:@@{await Html.RenderPartialAsync("js/_select2");}
+    @:@@{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    @:<script type="text/javascript">
+
+bool IsAdded = false;
+
+foreach (var property in Model.ModelMetadata.Properties)
+{
+    if (property.PropertyName.ToLower().Contains("date"))
+    {
+        if (IsAdded == false)
+        {
+        @:let calendar = $.calendars.instance('ethiopian', 'am');
+        @:let gcalendar = $.calendars.instance('gregorian', 'en');
+           IsAdded = true;
+        }
+        string propertyname = $"'#{property.PropertyName}'";
+        @:$(@propertyname).calendarsPicker({
+            @:calendar: gcalendar
+        @:});
+        }
+    }
+    @:</script>
+@:}
+}
+        // The following code closes the tag used in the case of a view using a layout page and the body and html tags in the case of a regular view page
+        if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+        {
+    @:</body>
+@:</html>
+}
+}
+@functions
+{
+    string GetAssociationName(IPropertyMetadata property)
+    {
+        //Todo: Implement properly.
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+}

@@ -1,0 +1,44 @@
+﻿@using Insya.Localization
+@{
+    if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-styled-left bg-white alert-arrow-left alert-dismissible">
+            <h6 class="alert-heading font-weight-semibold d-inline mr-1">@Html.Raw(Localization.Get("error"))</h6>
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            @TempData["Error"]
+        </div>
+    }
+    if (TempData["Info"] != null)
+    {
+        <div class="alert alert-info alert-styled-left bg-white alert-arrow-left alert-dismissible">
+            <h6 class="alert-heading font-weight-semibold d-inline mr-1">@Html.Raw(Localization.Get("info"))</h6>
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            @TempData["Info"]
+        </div>
+    }
+    if (TempData["Warning"] != null)
+    {
+        <div class="alert alert-warning alert-styled-left bg-white alert-arrow-left alert-dismissible">
+            <h6 class="alert-heading font-weight-semibold d-inline mr-1">@Html.Raw(Localization.Get("warning"))</h6>
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            @TempData["Warning"]
+        </div>
+    }
+    if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-styled-left bg-white alert-arrow-left alert-dismissible">
+            <h6 class="alert-heading font-weight-semibold d-inline mr-1">@Html.Raw(Localization.Get("success"))</h6>
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            @TempData["Success"]
+        </div>
+    }
+
+    if (TempData["Unauthorized"] != null)
+    {
+        <div class="alert alert-success alert-styled-left bg-white alert-arrow-left alert-dismissible">
+            <h6 class="alert-heading font-weight-semibold d-inline mr-1">@Html.Raw(Localization.Get("Info"))</h6>
+            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+            @TempData["Unauthorized"]
+        </div>
+    }
+}

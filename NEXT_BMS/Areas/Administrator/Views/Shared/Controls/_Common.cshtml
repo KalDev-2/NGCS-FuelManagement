@@ -1,0 +1,64 @@
+﻿@using Insya.Localization
+@{
+    string action = ViewData["action"] != null ? ViewData["action"].ToString() : "";
+}
+<div class="sidebar-sticky">
+    <div class="card bg-light fixedcontrolbar shadow-0">
+        <div class="card-header header-elements-inline p-1">
+            @switch (action.ToUpper())
+            {
+                case "INDEX":
+                case "TREEVIEW":
+                case ("VEHICLES"):
+
+                    @await Html.PartialAsync("Controls/_List")
+                    break;
+
+                case "CREATE":
+
+                    @await Html.PartialAsync("Controls/_Create")
+                    break;
+
+                case "EDIT":
+
+                    @await Html.PartialAsync("Controls/_Edit")
+                    break;
+
+                case "DELETE":
+
+                    @await Html.PartialAsync("Controls/_Delete")
+                    break;
+
+                case "DETAILS":
+
+                    @await Html.PartialAsync("Controls/_Details")
+                    break;
+
+                @*case "EMPLOYEES":
+
+                        @await Html.PartialAsync("Controls/_Payroll")
+                        break;
+
+                    case "TRANSLATE":*@
+
+                @*@await Html.PartialAsync("Controls/_Translate")
+                        break;
+
+                    case "ITEMREQUEST":
+
+                        @await Html.PartialAsync("Controls/_BackToList")
+                        break;*@
+
+                default:
+                    break;
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

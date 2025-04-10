@@ -1,0 +1,158 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.Role
+@{
+    var Applications = (IEnumerable<NEXT_BMS.Models.Application>)ViewBag.Applications;
+}
+<form asp-action="Create">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+
+            <div class="form-group">
+                @Html.Raw(Localization.Get("Name"))
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <label>
+                @Html.Raw(Localization.Get("Select Menus"))
+            </label>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                @foreach (var Application in Applications.OrderBy(x => x.Acronym))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" id="@Application.Id-tab" data-toggle="tab" href="#app_@Application.Id" role="tab" aria-controls="@Application.Name" aria-selected="true">
+                            <i class="@Application.Icon"></i>
+                            @Application.Acronym
+                        </a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+
+                @foreach (var Application in Applications.OrderBy(x => x.Acronym))
+                {
+                    var MenuCategories = Application.MenuCategories.Where(x => x.IsActive == true && x.IsDeleted == false && x.Menus.Any(m => x.IsActive));
+                    <div class="tab-pane" id="app_@Application.Id" role="tabpanel" aria-labelledby="@Application.Id-tab">
+
+                        @foreach (var Category in MenuCategories)
+                        {
+                            var Menus = Category.Menus.Where(x => x.IsDeleted == false);
+                            var Controllers = Menus.Select(x => x.Controller).Distinct();
+                            <h3>
+                                @Category.Name
+                            </h3>
+                            <div class="card-group-control card-group-control-right">
+                                @foreach (var Controller in Controllers)
+                                {
+                                    var gid = "g_" + Category.Id + "_" + Controller;
+                                    <div class="card mb-2">
+                                        <div class="card-header bg-light">
+                                            <h6 class="card-title">
+                                                <a class="text-default collapsed" data-toggle="collapse" href="#@gid">
+                                                    <i class="icon-menu7 mr-2 text-slate"></i> @Controller
+                                                </a>
+                                            </h6>
+                                        </div>
+                                        <div id="@gid" class="collapse">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    @foreach (var menu in Menus.Where(x => x.Controller == Controller))
+                                                    {
+                                                        <div class="custom-control custom-checkbox col-md-6">
+                                                            <input type="checkbox" class="custom-control-input" name="M_@menu.Controller" id="M_@menu.Id" value="@menu.Id">
+                                                            <label for="M_@menu.Id" class="custom-control-label">@menu.Title</label>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" name="@Controller" class="custom-control-input selectAll" id="selecctall_M_@gid">
+                                                    <label class="custom-control-label" for="selecctall_M_@gid">Select all fuctions</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="card-footer">
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/Content/global/js/demo_pages/form_checkboxes_radios.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $(".selectAll").change(function () {
+            $("input[name='M_" + $(this).attr('name') + "']").not(this).prop('checked', this.checked);
+        });
+
+        $(".checkSingle").click(function () {
+            if ($(this).is(":checked")) {
+                var isAllChecked = 0;
+                $("input[name='M_" + $(this).attr('name') + "']").each(function () {
+                    if (!this.checked)
+                        isAllChecked = 1;
+                });
+
+                if (isAllChecked == 0) {
+                    $("#selecctall_" + $(this).attr('name')).prop("checked", true);
+                }
+            }
+            else {
+                $("#selecctall_" + $(this).attr('name')).prop("checked", false);
+            }
+        });
+    });
+
+    $(this).submit(function (e) {
+        e.preventDefault();
+        var selected = [];
+        $('input:checked').each(function () {
+            if (!isNaN($(this).val())) {
+                selected.push($(this).val());
+            }
+        });
+
+        var fd = new FormData();
+        fd.append('name', $("#Name").val());
+        fd.append('selectedMenus', selected);
+        $.ajax({
+            cache: false,
+            url: '@Url.Action("Create", "Roles")',
+            type: 'POST',
+            data: fd,
+            cache: false,
+            async: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            complete: function (data, textStatus, jqXHR) {
+                window.location = '/Roles/';
+            }
+
+        });
+    });
+    </script>
+}
+
+

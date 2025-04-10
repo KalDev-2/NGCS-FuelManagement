@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Contact";
+
+}
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <input type="text" id="message" />
+            <input type="button" id="sendmessage" value="Send" />
+            <input type="hidden" id="displayname" />
+            <ul id="discussion"></ul>
+        </div>
+        <hr />
+        @Html.TextBox("messageX")
+        <input type="button" value="Submit" onclick="TestData()" />
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Scripts/jquery.signalR-2.4.3.js"></script>
+    <script src="~/SignalR/hubs"></script>
+    <script type="text/javascript">
+
+
+            $(function () {
+                // Declare a proxy to reference the hub.
+                var chat = $.connection.chat;
+            // Create a function that the hub can call to broadcast messages.
+                chat.client.broadcastMessage = function (name, message) {
+                    // Html encode display name and message.
+                    var encodedName = $('<div />').text(name).html();
+                    var encodedMsg = $('<div />').text(message).html();
+                    // Add the message to the page.
+                    $('#discussion').append('<li><strong>' + encodedName
+                        + '</strong>:  ' + encodedMsg + '</li>');
+                };
+            // Get the user name and store it to prepend to messages.
+            $('#displayname').val(prompt('Enter your name:', ''));
+            // Set initial focus to message input box.
+            $('#message').focus();
+            // Start the connection.
+                $.connection.hub.start().done(function () {
+                    $('#sendmessage').click(function () {
+                        let user = $('#displayname').val();
+                        let message = $('#message').val();
+
+                        chat.server.send(user, message);
+                        $('#message').val('').focus();
+                    });
+                });
+            });
+        function TestData() {
+            let message = $("#messageX").val();
+                $.ajax({
+                    cache: false,
+                    type: 'POST',
+                    url: '@Url.Action("RealTimeTest", "Home")',
+                    data: { 'messageX': message},
+                    async: false,
+                    success: function () {
+                      
+                    }
+                });
+            }
+    </script>
+}

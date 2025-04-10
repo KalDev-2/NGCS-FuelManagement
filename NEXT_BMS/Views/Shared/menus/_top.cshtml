@@ -1,0 +1,31 @@
+﻿<nav id="navmenu" class="navmenu">
+    <ul>
+        <li><a asp-action="Index" asp-controller="Home" class="active">Home</a></li>
+        <li class="dropdown">
+            <a href="#"><span>Administrations</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+                <li><a asp-action="Zones" asp-controller="Administrations">Zones</a></li>
+                <li><a asp-action="SpecialWoredas" asp-controller="Administrations">Special Woredas</a></li>
+                <li><a asp-action="Woredas" asp-controller="Administrations">Woredas</a></li>
+                <li><a asp-action="CityAdministrations" asp-controller="Administrations">City Administrations </a></li>
+            </ul>
+        </li>
+        <li><a asp-action="Index" asp-controller="Organizations">Organizations</a></li>
+        <li><a asp-action="Index" asp-controller="Services">Services</a></li>
+        <li><a asp-action="" asp-controller="">News</a></li>
+        <li><a asp-action="" asp-controller="">Vacancy</a></li>
+        <li><a asp-action="" asp-controller="">Contact</a></li>
+        <li class="dropdown">
+
+            <a href="#"><span> <span class="bi bi-key me-1"></span>Log In</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+
+                <li><a asp-action="GuestLogIn" asp-controller="Account">Guest</a></li>
+                <li><a asp-action="LogIn" asp-controller="Account">Administrator</a></li>
+            </ul>
+        </li>
+    </ul>
+    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+</nav>
+
+@*<a class="btn-getstarted" href="about.html">Get Started</a>*@

@@ -1,0 +1,20 @@
+﻿@using Insya.Localization
+@{
+    string pageName = ViewData["pageName"] != null ? ViewData["pageName"].ToString() : "";
+}
+<div class="btn-group-sm" role="group" aria-label="First group">
+    <a asp-action="Index" asp-controller="@pageName"  class="btn btn-info mr-1">
+        <span class="icon-arrow-left16"></span> <span class="hidden-xs">@Html.Raw(Localization.Get("backtolist"))</span>
+    </a>
+    <a href="@Url.Action("Create", @ViewData["pageName"].ToString())" class="btn btn-primary mr-1"><i class="icon-plus2"></i> <span class="hidden-xs hidden-sm">@Html.Raw(Localization.Get("create"))</span></a>
+
+    <button type="submit" class="btn btn-success" value="Create">
+        <span class="icon-floppy-disk"></span> <span class="hidden-xs">@Html.Raw(Localization.Get("save"))</span>
+    </button>
+</div>
+
+
+
+
+
+

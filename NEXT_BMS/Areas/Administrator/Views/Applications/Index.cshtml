@@ -1,0 +1,116 @@
+﻿@model IEnumerable<NEXT_BMS.Models.Application>
+@using Insya.Localization;
+@await Html.PartialAsync("Controls/_Common")
+<div class="card">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-1">
+
+        <table class="table table-togglable table-hover table-xs">
+            <thead>
+                <tr>
+                    <th data-toggle="true" class="footable-visible footable-first-column">
+                        @Html.ActionLink("Name", "Index", new { Sorting_Order = "Name", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("Acronym", "Index", new { Sorting_Order = "Acronym", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("Icon", "Index", new { Sorting_Order = "Icon", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("Code", "Index", new { Sorting_Order = "Code", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("Color", "Index", new { Sorting_Order = "Color", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("Version", "Index", new { Sorting_Order = "Version", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+
+                    <th data-hide="phone">
+                        @Html.ActionLink("IsActive", "Index", new { Sorting_Order = "IsActive", Filter_Value = ViewBag.FilterValue }, new { @class = "text-dark" })
+                    </th>
+                    <th class="p-0 nosort text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("Details", new { id=item.Id })" class="text-info-800">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Acronym)
+                        </td>
+                        <td>
+                            <i class="@item.Icon"></i>  @Html.DisplayFor(modelItem => item.Icon)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Color) <span class="badge badge-pill @item.Color.Trim()">sample</span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Version)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td class="text-center">
+                            <div class="list-icons">
+                                <div class="list-icons-item dropdown">
+                                    <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-menu9"></i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="@Url.Action("Details", new { id=item.Id })" class="dropdown-item"><i class="icon-list3"></i> View Details</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="@Url.Action("Edit", new { id=item.Id })" class="dropdown-item"><i class="icon-pencil7"></i> Edit</a>
+                                        <a href="@Url.Action("Delete", new { id=item.Id })" class="dropdown-item"><i class="icon-cross2"></i> Remove</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="card-footer">
+
+        </div>
+
+    </div>
+</div>
+    @section Scripts {
+        <script src="~/Content/global/js/plugins/tables/footable/footable.min.js"></script>
+        <script src="~/Content/global/js/demo_pages/table_responsive.js"></script>
+        <script>
+    function export_data() {
+            $.ajax(
+                window.location = '@Url.Action("export","TIMS.Models.Application")'
+            );
+    }
+        </script>
+    }
+
+

@@ -1,0 +1,30 @@
+﻿@using Insya.Localization
+<form method="get">
+    <div class="row">
+        <div class="col-auto pr-0">
+            <a href="@Url.Action("Data", "Localizations")" class="btn btn-info mr-1">
+                <span class="icon-arrow-left16"></span> <span class="hidden-xs">@Html.Raw(Localization.Get("backtolist"))</span>
+            </a>
+        </div>
+        <div class="col-auto pr-0">
+            <a href="@Url.Action(ViewData["Action"].ToString(), @ViewData["pageName"].ToString())" class="btn btn-primary btn-sm"><i class="icon-database-refresh"></i> <span class="hidden-xs">@Html.Raw(Localization.Get("refresh"))</span></a>
+        </div>
+        <div class="col-auto pr-0 hidden-xs" id="npag" style="max-height:34px;">
+            @{List<string> pa = new List<string>() { "10", "20", "50", "100", "1000" };}
+            @Html.DropDownList("SizeOfPage", new SelectList(pa, Context.Session.GetString("Size_Of_Page")), new { @class = "form-control form-control-sm border-warning select", @onchange = "$(this).parents('form').submit();" })
+        </div>
+        <div class="col-auto pr-0">
+            <div class="form-group-feedback form-group-feedback-right form-control-feedback-sm">
+                @Html.TextBox("Search_data", @ViewData["SearchValue"] != null ? @ViewData["SearchValue"].ToString() : "", new { @class = "form-control border-dark form-control-sm", @placeholder = @Html.Raw(Localization.Get("search"))})
+                <div class="form-control-feedback">
+                    <i class="icon-folder-search"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+

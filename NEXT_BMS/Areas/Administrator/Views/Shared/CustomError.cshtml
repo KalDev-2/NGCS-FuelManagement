@@ -1,0 +1,24 @@
+﻿@model NEXT_BMS.ViewModels.ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_SideLayout";
+	var exception = ViewData["Exception"] as Exception;
+}
+<div class="flex-fill">
+
+	<!-- Error title -->
+	<div class="text-center mb-4">
+		<h2 class="text-secondary">An error occurred while processing your request.</h2>
+		<p class="text-danger">Developers are notified via email about this issue.</p>
+	</div>
+	<!-- /error title -->
+	<!-- Error content -->
+	<div class="text-center">
+		<a asp-action="Index" asp-controller="Home" class="btn btn-primary">
+			<i class="ph-house me-2"></i>
+			Return to home
+		</a>
+	</div>
+	<!-- /error wrapper -->
+
+</div>

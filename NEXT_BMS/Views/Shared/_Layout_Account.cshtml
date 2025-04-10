@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <partial name="components/_header" />
+</head>
+<body class="index-page">
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+            <partial name="components/_logo" />
+            <partial name="menus/_top" />
+        </div>
+    </header>
+
+    <main class="main">
+        <section id="clients" class="clients section light-background">
+            <div class="container-fluid" data-aos="fade-up">
+                @RenderBody()
+            </div>
+        </section>
+    </main>
+    <partial name="components/_footer" />
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- Preloader -->
+    <div id="preloader"></div>
+    <partial name="components/_js" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

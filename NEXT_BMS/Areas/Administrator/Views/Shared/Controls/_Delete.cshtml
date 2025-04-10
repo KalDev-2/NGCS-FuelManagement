@@ -1,0 +1,28 @@
+﻿@using Insya.Localization
+@{ 
+    string action = ViewData["action"] != null ? ViewData["action"].ToString() : "";
+    string id = ViewData["id"] != null ? ViewData["id"].ToString() : "";
+}
+<div class="btn-group-sm" role="group" aria-label="First group">
+    <form asp-action="@action">
+        <a asp-action="Index" class="btn btn-info mr-1">
+            <span class="icon-arrow-left16"></span> <span class="hidden-xs">@Html.Raw(Localization.Get("backtolist"))</span>
+        </a>
+        <a asp-action="Create" class="btn btn-primary mr-1"><i class="icon-plus2"></i> <span class="hidden-xs">@Html.Raw(Localization.Get("create"))</span></a>
+
+        <a asp-action="Edit" asp-route-id="@id" class="btn btn-warning mr-1">
+            <span class="icon-pencil7"></span> <span class="hidden-xs">@Html.Raw(Localization.Get("edit"))</span>
+        </a>
+
+        <button type="submit" class="btn btn-danger mr-1" value="Delete">
+            <span class="icon-database-remove"> </span> <span class="hidden-xs hidden-sm">@Html.Raw(Localization.Get("yesdelete"))</span>
+        </button>
+    </form>
+
+</div>
+
+
+
+
+
+

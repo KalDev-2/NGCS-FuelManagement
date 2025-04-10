@@ -1,0 +1,31 @@
+﻿@using Insya.Localization
+@{
+
+    string searchValue = ViewData["SearchValue"] != null ? ViewData["pageName"].ToString() : "";
+
+    string action = ViewData["Action"] != null ? ViewData["Action"].ToString() : "Index";
+
+    string size_Of_Page = Context.Session.GetString("Size_Of_Page") != null ? Context.Session.GetString("Size_Of_Page") : "10";
+
+    List<string> pa = new List<string>() { "10", "20", "50", "100", "1000" };
+}
+
+<form method="get">
+    <div class="row">
+        <div class="col-auto pr-0">
+            <a asp-action="Create" class="btn btn-success btn-sm">
+                <i class="icon-plus2"></i> <span class="hidden-xs">@Html.Raw(Localization.Get("create"))</span>
+            </a>
+        </div>
+        <div class="col-auto pr-0">
+            <a asp-action="@action" class="btn btn-primary btn-sm"><i class="icon-database-refresh"></i> <span class="hidden-xs">@Html.Raw(Localization.Get("refresh"))</span></a>
+        </div>
+        <div class="col-auto pr-0">
+            <button type="button" onclick="export_data();" class="btn btn-outline-secondary btn-sm">
+                <i class="icon-file-excel"></i> <span class="hidden-xs hidden-sm">@Html.Raw(Localization.Get("export"))</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+

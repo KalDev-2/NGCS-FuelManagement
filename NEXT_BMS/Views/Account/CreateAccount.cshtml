@@ -1,0 +1,126 @@
+﻿@model NEXT_BMS.Models.User
+ 
+@{
+    ViewData["Title"] = "Create Account";
+}
+<style>
+    .bg-lightsilver {
+        background-color: #D3D3D3 !important; /* Light Silver */
+    }
+
+    .btn-lightsilver {
+        background-color: #D3D3D3;
+        border-color: #D3D3D3;
+        color: #000;
+    }
+
+        .btn-lightsilver:hover {
+            background-color: #b0b0b0;
+            border-color: #b0b0b0;
+        }
+
+    .border-lightsilver {
+        border: 2px solid #D3D3D3 !important;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-lightaqua rounded-lg">
+                <div class="card-header bg-lightaqua text-white text-center py-4">
+                    <h3 class="fw-light mb-1">Create an Account</h3>
+                    <p class="mb-0">Use your username and password to login</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="CreateAccount" asp-controller="Account" method="post">
+                        <div class="mb-3">
+                            <label for="FirstName" class="form-label">First Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-user"></i></span>
+                                <input type="text" id="FirstName" name="firstName" class="form-control border-lightaqua" placeholder="Your First Name" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="MiddleName" class="form-label">Middle Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-user"></i></span>
+                                <input type="text" id="MiddleName" name="middleName" class="form-control border-lightaqua" placeholder="Your Middle Name" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="LastName" class="form-label">Last Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-user"></i></span>
+                                <input type="text" id="LastName" name="lastName" class="form-control border-lightaqua" placeholder="Your Last Name" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="UserName" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-user"></i></span>
+                                <input type="text" id="UserName" name="userName" class="form-control border-lightaqua" placeholder="Your Username" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="PhoneNumber" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-phone"></i></span>
+                                <input type="text" id="PhoneNumber" name="phoneNumber" class="form-control border-lightaqua" placeholder="Your Phone Number" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-envelope"></i></span>
+                                <input type="email" id="email" name="email" class="form-control border-lightaqua" placeholder="Your Email" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <select asp-for="GenderId" class="form-control border-lightaqua rounded-pill" asp-items="ViewBag.GenderId" required></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Preferred Language</label>
+                            <select asp-for="LanguageId" class="form-control border-lightaqua rounded-pill" asp-items="ViewBag.LanguageId" required></select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="Password" name="password" class="form-control border-lightaqua" placeholder="Enter Password" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-lightaqua"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control border-lightaqua" placeholder="Confirm Password" required />
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-key"></i>
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <p class="mb-0">Already have an account? <a href="#" class="text-lightaqua fw-bold">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

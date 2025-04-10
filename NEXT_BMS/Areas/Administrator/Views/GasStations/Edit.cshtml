@@ -1,0 +1,67 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.GasStation
+<form asp-action="Edit">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card border-light shadow-sm">
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title fw-bold text-primary">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <!-- Form Fields -->
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label fw-semibold">Gas Station Name</label>
+                        <input asp-for="Name" class="form-control form-control-lg" autocomplete="off" placeholder="Enter Gas Station Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Location" class="form-label fw-semibold">Location</label>
+                        <input asp-for="Location" class="form-control form-control-lg" autocomplete="off" placeholder="Enter Location" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="CityId" class="form-label fw-semibold">Select City</label>
+                        <select asp-for="CityId" class="form-control select2" asp-items="ViewBag.CityId">
+                            <option value="">---Select---</option>
+                        </select>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Hidden Fields for IsDeleted and IsActive -->
+                    <input type="hidden" asp-for="IsDeleted" value="False" />
+                    <input type="hidden" asp-for="IsActive" value="True" />
+                </div>
+            </div>
+        </div>
+         @* <div class="card-footer text-end">
+             <button type="submit" class="btn btn-success btn-lg px-4 py-2">Save Changes</button>
+         </div> *@
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("js/_select2");
+    }
+    @{
+        await Html.RenderPartialAsync("js/_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        // Optional: Custom JS for additional behavior
+    </script>
+}

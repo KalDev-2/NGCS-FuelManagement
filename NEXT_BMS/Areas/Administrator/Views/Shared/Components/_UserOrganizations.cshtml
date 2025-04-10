@@ -1,0 +1,69 @@
+﻿@*@using Insya.Localization
+@using System.Text.Json;
+@using System.Linq;
+@using Microsoft.Extensions.Options
+@using NEXT_BMS.ViewModels;
+@inject IOptions<AppConfig> AppConfig
+
+<a href="#" class="text-info-800 font-weight-bold" Data-toggle="modal" data-target="#modal_selectOrganization">
+    <i class="icon-home8"></i>
+    @if (Context.Session.GetInt32("SelectedOrganizationId") is not null)
+    {
+
+        @Context.Session.GetString("SelectedOrganizationName")
+    }
+    else
+    {
+        @Html.Raw(Localization.Get("Select Organization"))
+    }
+
+</a>
+<div id="modal_selectOrganization" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header mt-0 @AppConfig.Value.BrandColor">
+                <h4 class="modal-title">
+                    <i class="icon-"></i>
+                    @Html.Raw(Localization.Get("Select Organization"))
+                </h4>
+                <a href="#" class="pt-2" data-dismiss="modal">
+                    <i class="icon-cross text-white"></i>
+                </a>
+            </div>
+            <form asp-action="selectUserOrganization" asp-controller="Users">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        @Html.Raw(Localization.Get("Select Organization"))
+                        <select name="userOrganizationId" class="select-search form-control">
+                            <option></option>
+                            @foreach (var category in GetUserOrganization())
+                            {
+
+                                <option value="@category.OrganizationId">@category.OrganizationName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-link" data-dismiss="modal"><i class="icon-cross2 font-size-base mr-1"></i> Close</button>
+                    <button class="btn bg-primary"><i class="icon-check2 font-size-base mr-1"></i> Select</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private List<NEXT_BMS.EmployeeOrganization> GetUserOrganization()
+    {
+        var userOrganizationJsons = Context.Session.GetString("userOrganizations");
+        if (string.IsNullOrEmpty(userOrganizationJsons))
+        {
+            return new List<NEXT_BMS.EmployeeOrganization>();
+        }
+        var userOrganizations = JsonSerializer.Deserialize<List<NEXT_BMS.EmployeeOrganization>>(userOrganizationJsons);
+        return userOrganizations.Distinct().ToList();
+    }
+
+}*@

@@ -1,0 +1,57 @@
+﻿@using Insya.Localization
+@using System.Text.Json;
+@using System.Linq;
+@using NEXT_BMS.Utilities;
+@{
+    int MenuTypeId =(int)menuTypes.General;
+    if (Context.Session.GetInt32("BaseMenuTypeId") == null)
+    {
+        Context.Session.SetInt32("BaseMenuTypeId", (int)menuTypes.General);
+        Context.Session.SetInt32("MenuTypeId", (int)menuTypes.General);
+        Context.Session.SetString("MenuType", "General Menu");
+    }
+
+    if (int.TryParse(Context.Session.GetInt32("MenuTypeId").ToString(), out int parsedMenuTypeId) && parsedMenuTypeId != (int)menuTypes.General)
+    {
+        MenuTypeId = parsedMenuTypeId;
+    }
+    var menuCategories = GetMenuCategories(MenuTypeId);
+}
+
+@foreach (var category in menuCategories)
+{
+    var menus = GetMenus(category.Id);
+    <li class="nav-item nav-item-submenu">
+        <a href="#" class="nav-link"><i class="@category.Icon"></i> @Html.Raw(Localization.Get(category.Name))</a>
+        <ul class="nav nav-group-sub" data-submenu-title="@category.Name">
+            @foreach (var child in menus)
+            {
+                <li class="nav-item oursidemenu"><a href="@Url.Action(@child.Action, @child.Controller)" class="nav-link"><i class="icon-circle-small"></i>@Html.Raw(Localization.Get(child.Title))</a></li>
+            }
+        </ul>
+    </li>
+}
+
+@functions {
+    private List<NEXT_BMS.Models.MenuCategory> GetMenuCategories(int menuTypeId)
+    {
+        var menuCategoriesJson = Context.Session.GetString("menuCategories");
+        if (string.IsNullOrEmpty(menuCategoriesJson))
+        {
+            return new List<NEXT_BMS.Models.MenuCategory>();
+        }
+        var menuCategories = JsonSerializer.Deserialize<List<NEXT_BMS.Models.MenuCategory>>(menuCategoriesJson);
+        return menuCategories.Where(x => x.MenuTypeId == menuTypeId).Distinct().ToList();
+    }
+
+    private List<NEXT_BMS.Models.Menu> GetMenus(int menuCategoryId)
+    {
+        var menuJson = Context.Session.GetString("menus");
+        if (string.IsNullOrEmpty(menuJson))
+        {
+            return new List<NEXT_BMS.Models.Menu>();
+        }
+        var menus = JsonSerializer.Deserialize<List<NEXT_BMS.Models.Menu>>(menuJson);
+        return menus.Where(x => x.MenuCategoryId == menuCategoryId).Distinct().ToList();
+    }
+}

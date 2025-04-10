@@ -1,0 +1,109 @@
+﻿@using Insya.Localization;
+@await Html.PartialAsync("Controls/_Common")
+<div class="card">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <table class="table datatable-init no-footer">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th data-toggle="true" class="footable-visible footable-first-column">
+                    @Html.Raw(Localization.Get("FullName"))
+                </th>
+                <th data-toggle="true" class="footable-visible footable-first-column">
+                    @Html.Raw(Localization.Get("MobileNumber"))
+                </th>
+
+                <th data-hide="phone">
+                    @Html.Raw(Localization.Get("Email"))
+                </th>
+
+                <th data-hide="phone">
+                    @Html.Raw(Localization.Get("UserName"))
+                </th>
+
+                <th data-hide="phone">
+                    @Html.Raw(Localization.Get("LastLogon"))
+                </th>
+
+                <th data-hide="phone">
+                    @Html.Raw(Localization.Get("Status"))
+                </th>
+
+                <th class="text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_datatables");}
+    <script>
+        $('.datatable-init').DataTable({
+            buttons: {
+                dom: {
+                    button: {
+                        className: 'btn btn-light'
+                    }
+                },
+                buttons: [
+                    { extend: 'copy' },
+                    { extend: 'csv' },
+                    { extend: 'excel' },
+                    { extend: 'pdf' },
+                    { extend: 'print' }
+                ]
+            },
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "ajax": {
+                "url": '@Url.Action("GetUsers")',
+                "type": "POST",
+                "datatype": "json"
+                , global: false
+            }, "columnDefs": [{
+                "targets": [0],
+                "visible": false,
+                "searchable": false
+            }, {
+                "aTargets": ['nosort'],
+                "orderable": false,
+                "searchable": false
+            }],
+            "columns": [
+
+                { "data": "id", "name": "Id", "autoWidth": true },
+                {
+                    "render": function (data, type, row, meta) {
+                        return "<a href='/Administrator/Users/Details/" + row.id + "' class='text-info-800'>" + row.employeeName + "</a>";
+                    }
+                },
+                { "data": "phoneNumber", "name": "PhoneNumber", "autoWidth": true },
+                { "data": "email", "name": "Email", "autoWidth": true },
+                { "data": "isActive", "name": "IsActive", "autoWidth": true },
+                { "data": "isActive", "name": "IsActive", "autoWidth": true },
+                {
+                    "render": function (data, type, row, meta) {
+                        return "<div class='d-inline-flex'><div class='dropdown'><a href='#' class='text-body' data-bs-toggle='dropdown' aria-expanded='false'><i class='ph-list'></i></a><div class='dropdown-menu dropdown-menu-end'><a href='/CriteriaSets/Details/" + row.id + "' class='dropdown-item'>" +
+                            "<i class='ph-article me-2'></i>View Detail</a><a href='/CriteriaSets/Edit/" + row.id + "' class='dropdown-item'>" +
+                            "<i class='ph-pencil me-2'></i>Edit</a><div class='dropdown-divider''></div><a href='/CriteriaSets/Delete/" + row.id + "' class='dropdown-item'>" +
+                            "<i class='ph-trash text-danger me-2'></i>Delete</a></div></div></div>";
+                    }
+                }
+            ]
+        });
+    </script>
+}

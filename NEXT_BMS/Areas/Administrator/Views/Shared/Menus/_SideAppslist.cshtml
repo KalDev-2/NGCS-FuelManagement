@@ -1,0 +1,34 @@
+﻿@using Insya.Localization
+@using System.Text.Json;
+@using System.Linq;
+
+<ul class="nav nav-sidebar" data-nav-type="accordion">
+
+    @{var applications = GetApplications();}
+    @foreach (var app in applications)
+    {
+        <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link">
+                <i class="@app.Icon"></i>
+                @Html.Raw(Localization.Get(app.Acronym.Replace(" ", "")))
+            </a>
+            <ul class="nav nav-group-sub" data-submenu-title="Horizontal navigation">
+                <li class="nav-item"><a href="@Url.Action("SelectApplication","Users",new { Id=app.Id})" class="nav-link">@Html.Raw(Localization.Get("openapp"))</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">@Html.Raw(Localization.Get("abouttheapp"))</a></li>
+            </ul>
+        </li>
+    }
+</ul>
+
+@functions {
+    private List<NEXT_BMS.Models.Application> GetApplications()
+    {
+        var applicationsJson = Context.Session.GetString("Applications");
+        if (string.IsNullOrEmpty(applicationsJson))
+        {
+            return new List<NEXT_BMS.Models.Application>();
+        }
+        var applications = JsonSerializer.Deserialize<List<NEXT_BMS.Models.Application>>(applicationsJson);
+        return applications.Where(x => x.IsActive).Distinct().ToList();
+    }
+}

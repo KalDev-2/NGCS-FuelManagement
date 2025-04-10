@@ -1,0 +1,29 @@
+﻿@using Insya.Localization
+@using System.Text.Json;
+@using System.Linq;
+<div class="row">
+    @{var applications = GetApplications();}
+     
+    @foreach (var app in applications)
+    {
+    <div class="col pb-2" style="max-width: 120px; min-width: 120px;">
+        <a href="@Url.Action("SelectApplication","Users",new { Id=app.Id})" class="btn @app.Color btn-block btn-float">
+            <i class="@app.Icon icon-2x"></i>
+            <span class="small" style="height:40px;">@Html.Raw(Localization.Get(app.Acronym.Replace(" ", "")))</span>
+        </a>
+    </div>
+    }
+</div>
+
+@functions {
+    private List<NEXT_BMS.Models.Application> GetApplications()
+    {
+        var applicationsJson = Context.Session.GetString("Applications");
+        if (string.IsNullOrEmpty(applicationsJson))
+        {
+            return new List<NEXT_BMS.Models.Application>();
+        }
+        var applications = JsonSerializer.Deserialize<List<NEXT_BMS.Models.Application>>(applicationsJson);
+        return applications.Where(x => x.IsActive).Distinct().ToList();
+    }
+}

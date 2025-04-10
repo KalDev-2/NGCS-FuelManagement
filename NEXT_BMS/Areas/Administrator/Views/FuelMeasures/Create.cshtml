@@ -1,0 +1,66 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.FuelMeasure
+<form asp-action="Create">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline py-2">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="GasStation" class="form-label"></label>
+                        <select asp-for="GasStationId" class="form-control select-search" asp-items="ViewBag.GasStationId"><option value="">---Select---</option></select>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FuelType" class="form-label"></label>
+                        <select asp-for="FuelTypeId" class="form-control select-search" asp-items="ViewBag.FuelTypeId"><option value="">---Select---</option></select>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Quantity" class="form-label"></label>
+                        <input asp-for="Quantity" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    
+                   
+                     @* <div class="mb-3">
+                         <label asp-for="ActionBy" class="form-label"></label>
+                         <select asp-for="ActionBy" class="form-control select-search" asp-items="ViewBag.ActionBy"><option value="">---Select---</option></select>
+                     </div>
+                     <div class="mb-3">
+                         <label asp-for="ApprovedBy" class="form-label"></label>
+                         <select asp-for="ApprovedBy" class="form-control select-search" asp-items="ViewBag.ApprovedBy"><option value="">---Select---</option></select>
+                     </div> *@
+                   
+                    <input type="hidden" asp-for="IsActive" value="True" />
+                    <input type="hidden" asp-for="IsDeleted" value="False" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_date");}
+    @{await Html.RenderPartialAsync("js/_select2");}
+    @{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        let calendar = $.calendars.instance('ethiopian', 'am');
+        let gcalendar = $.calendars.instance('gregorian', 'en');
+        $('#Date').calendarsPicker({
+            calendar: gcalendar
+        });
+    </script>
+}

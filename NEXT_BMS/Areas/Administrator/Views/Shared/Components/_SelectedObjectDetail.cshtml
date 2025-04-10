@@ -1,0 +1,54 @@
+﻿@using Insya.Localization
+@{ 
+    string selectedItem = Context.Session.GetString("SelectedItem");
+
+    string selectedObjectName = Context.Session.GetString("SelectedObjectName");
+    string selectedObjectDetail = Context.Session.GetString("SelectedObjectDetail");
+    string selectedObjectController = Context.Session.GetString("SelectedObjectController");
+    string photo = Context.Session.GetString("SelectedObjectPhoto");
+    if (string.IsNullOrEmpty(photo))
+    {
+        photo = "~/Uploads/Users/NoImage.jpg";
+    }
+}
+@if (string.IsNullOrEmpty(selectedItem))
+{
+    <li class="nav-item">
+        <a href="/" class="nav-link">
+            <i class="icon-home4"></i>
+            <span>
+                @Html.Raw(Localization.Get("dashboard"))
+                <span class="d-block font-weight-normal opacity-50">No active info</span>
+            </span>
+        </a>
+    </li>
+}
+else
+{
+    <li class="nav-item pt-0">
+        <div class="card sidebar-user">
+            <div class="card-body">
+                <div class="media">
+                    <a href="@Url.Content(photo)" data-popup="lightbox" class="mr-3">
+                        <img src="@Url.Content(photo)" width="38" height="38" class="rounded-circle" alt="">
+                    </a>
+                    <div class="media-body">
+                        <div class="media-title font-weight-semibold">@selectedObjectName</div>
+                        <div class="font-size-xs opacity-50">
+                            <i class="icon-folder-check font-size-sm"></i> @selectedObjectDetail |
+                            @if (string.IsNullOrEmpty(selectedObjectController))
+                            {
+                                <a href="@Url.Action("Index",selectedObjectController)">Back to list</a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Index")">Back to list</a>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </li>
+}

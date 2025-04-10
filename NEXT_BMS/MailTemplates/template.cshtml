@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>NEXT_BMS - Ethiopia</title>
+    <style>
+        /* If the screen size is 601px or more, set the font-size of <div> to 80px */
+        @@media only screen and (min-width: 601px) {
+            .elogo {
+                padding-left: 100px;
+            }
+        }
+
+        /* If the screen size is 600px or less, set the font-size of <div> to 30px */
+        @@media only screen and (max-width: 600px) {
+            .elogo {
+                padding-left: 0px;
+            }
+        }
+    </style>
+</head>
+<!-- partial:index.partial.html -->
+<body style="margin: 0; padding-top: 0px; padding-bottom: 50px; background: #f5f5f5; ">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;">
+        <tr>
+            <td bgcolor="#247297">
+                <div align="center" style="padding: 0px 15px 0px 15px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="wrapper">
+                        <!-- LOGO -->
+                        <tr>
+                            <td style="padding: 10px 0px 10px 0px;" class="logo">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tr>
+                                        <td bgcolor="#247297">
+                                            <h1 style="margin: 5px; color: white;" class="elogo">Educational Assessment and Examinations Services</h1>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="background: #fff; padding: 20px 10px; width: 90%; z-index: 5; margin: auto; border: 1px solid rgba(0,0,0,.1)">
+        <table style="background: #fff; margin: auto;" width="90%">
+            <tr>
+                <td>
+                    <h3>Hello, @Model.FullName</h3>
+                    
+                    @Model.Body
+                    <br />
+                    <p>@Model.Notice</p>
+
+                    <br />
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="padding: 10px 10px; width: 90%; z-index: 5; margin: auto; border: 0px solid rgba(0,0,0,.1)">
+        <table style="margin: auto;" width="90%">
+            <tr>
+                <td style="font-size:11px;line-height:16px;color:#aaa;" class="footerwrap">
+                    <div style="font-family:'Helvetica Neue', Arial, Helvetica, sans-serif;margin-top:5px;font-size:11px;color:#666666"> Message sent via automated mail system. </div>
+                    Addis Ababa, Ethiopia, <br />Copyright © 2022 EAES - Educational Assessment and Examinations Service.<br /> <br />
+                    <a href='#' style='color:#182e45;'>Contact</a> | <a href='#' style='color:#182e45;'>HU &amp; EAES Software Developers</a>;
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<!-- partial -->
+</html>
+

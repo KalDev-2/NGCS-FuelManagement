@@ -1,0 +1,80 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.Application
+<form asp-action="Create">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Acronym" class="form-label"></label>
+                        <input asp-for="Acronym" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Acronym" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Icon" class="form-label"></label>
+                        <input asp-for="Icon" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Icon" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Code" class="form-label"></label>
+                        <input asp-for="Code" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Color" class="form-label"></label>
+                        <input asp-for="Color" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Version" class="form-label"></label>
+                        <input asp-for="Version" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Version" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Url" class="form-label"></label>
+                        <input asp-for="Url" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Url" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="SortOrder" class="form-label"></label>
+                        <input asp-for="SortOrder" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="SortOrder" class="text-danger"></span>
+                    </div>
+                    <input type="hidden" asp-for="IsActive" value="True" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_select2");}
+    @{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

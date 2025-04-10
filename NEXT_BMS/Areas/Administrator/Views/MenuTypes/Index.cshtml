@@ -1,0 +1,103 @@
+﻿@model IEnumerable<NEXT_BMS.Models.MenuType>
+@using Insya.Localization;
+@await Html.PartialAsync("Controls/_Common")
+<div class="card">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-1">
+         <table class="table datatable-init no-footer table-xs table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PrimaryController)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th class="p-0 nosort text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_datatables");}
+    <script type="text/javascript">
+        $('.datatable-init').DataTable({
+        buttons: {
+            dom: {
+                button: {
+                    className: 'btn btn-light'
+                }
+            },
+            buttons: [
+                { extend: 'copy' },
+                { extend: 'csv' },
+                { extend: 'excel' },
+                { extend: 'pdf' },
+                { extend: 'print' }
+            ]
+        },
+        "processing": true,
+        "serverSide": true,
+        "filter": true,
+        "ajax": {
+            "url": '@Url.Action("GetMenuTypes")',
+            "type": "POST",
+            "datatype": "json",
+            global: false
+        },
+        "columnDefs": [{
+            "targets": [0],
+            "visible": false,
+            "searchable": false
+            },
+            {
+            "aTargets": ['nosort'],
+            "orderable": false,
+            "searchable": false
+        }],
+        "columns": [
+            { "data": "id", "name": "Id", "autoWidth": true },
+            {
+                "render": function (data, type, row, meta) {
+                    return `<a href="/MenuTypes/Details/${row.id}" class="text-info-800">${row.name}</a>`;
+                }
+            },
+           /* { "data": "name", "name": "Name", "autoWidth": true },*/
+            { "data": "primaryController", "name": "PrimaryController", "autoWidth": true },
+            { "data": "isActive", "name": "IsActive", "autoWidth": true },
+            {
+                "render": function (data, type, row, meta) {
+                return`<div class="list-icons">
+                            <div class="list-icons-item dropdown">
+                                <a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-menu9"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="/MenuTypes/Details/${row.id}" class="dropdown-item"><i class="icon-list3"></i>@Html.Raw(Localization.Get("viewdetails"))</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="/MenuTypes/Edit/${row.id}" class="dropdown-item"><i class="icon-pencil7"></i> @Html.Raw(Localization.Get("edit"))</a>
+                                    <a href="/MenuTypes/Delete/${row.id}" class="dropdown-item"><i class="icon-cross2"></i> @Html.Raw(Localization.Get("remove"))</a>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                }
+            ]
+        });
+    </script>
+}
+

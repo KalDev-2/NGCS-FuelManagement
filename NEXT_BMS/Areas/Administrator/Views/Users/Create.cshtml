@@ -1,0 +1,80 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.User
+
+@using (Html.BeginForm())
+{
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        @Html.AntiForgeryToken()
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <fieldset>
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    <label class="form-label font-weight-semibold">@Html.Raw(Localization.Get("Employee"))</label>
+                    @Html.DropDownList("EmployeeId", (SelectList)ViewBag.EmployeeId, string.Empty, new { @class = "select-search border-teal" })
+                    @Html.ValidationMessageFor(model => model.Id)
+
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label font-weight-semibold">@Html.Raw(Localization.Get("MobileNumber"))</label>
+                    @Html.EditorFor(model => model.PhoneNumber)
+                    @Html.ValidationMessageFor(model => model.PhoneNumber)
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label font-weight-semibold">@Html.Raw(Localization.Get("Email"))</label>
+                    @Html.EditorFor(model => model.Email)
+                    @Html.ValidationMessageFor(model => model.Email)
+
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label font-weight-semibold">@Html.Raw(Localization.Get("UserName"))</label>
+                    @Html.EditorFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.UserName)
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label font-weight-semibold">@Html.Raw(Localization.Get("Password"))</label>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control border-dark" })
+                    @Html.ValidationMessageFor(model => model.Password)
+
+                </div>
+
+                <div class="form-group">
+                    <div id="strengthMessage"></div>
+                </div>
+
+            </fieldset>
+            <input type="hidden" name="FailureCount" value="0" />
+            <input type="hidden" name="CreatedDate" value="@DateTime.Now" />
+        </div>
+
+        <div class="card-footer">
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <link href="~/Content/js/password_strength/password_strength.css" rel="stylesheet" />
+    <script src="~/Content/js/password_strength/password_strength.js"></script>
+    @{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("js/_select2");}
+}
+
+

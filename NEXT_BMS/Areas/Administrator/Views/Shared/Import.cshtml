@@ -1,0 +1,64 @@
+﻿<div id="modal_uploadExcel" class="modal fade">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white border-0">
+                <span class="ph-cards me-2"></span>  <h5 class="modal-title">Import list from excel/CSV file</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="fromFiles" class="form-label">Please select file (<code>must be .xlsx or csv file</code>)</label>
+                            <input type="file" id="fromFiles" name="fromFiles" class="form-control" />
+                        </div>
+                        <div class="mb-3" style="display:none" id="previewBtn">
+                            <button type="button" data-preview="true" class="btn btn-warning btnUpload">Preview the file</button>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Match the excel columns with your database columns.</label>
+                            <table class="table table-xs table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Required Columns</th>
+                                        <th>Columns From Excel</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="columns"></tbody> 
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_uploadPreview" class="modal fade">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary text-white border-0">
+                <span class="ph-cards me-2"></span>  <h5 class="modal-title">Excel file upload(preview)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <input type="hidden" id="FileId" name="FileId" />
+
+            <div class="table-responsive">
+                <table id="tblPreview" class="table no-footer table-xs table-hover text-nowrap"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                <button type="button" data-preview="false" class="btn btn-secondary btnUpload">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿@model IEnumerable<NEXT_BMS.Areas.Administrator.Controllers.Controlr>
+@using Insya.Localization;
+@{
+    var menus = (IEnumerable<NEXT_BMS.Models.Menu>)ViewBag.Menus;
+}
+
+@await Html.PartialAsync("Controls/_Common")
+
+<div class="card border-start border-start-width-2 border-start-secondary border-end border-end-width-1 border-end-secondary rounded-0">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-xs" id="MenuList">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th class="bg-secondary text-white"><i class="ph-list-bullets me-2"></i>@item.Name</th>
+                        <th class="bg-secondary text-white">Title</th>
+                        <th class="bg-secondary text-white">Menu Category</th>
+                        <th class="bg-secondary text-white text-center">Is Menu</th>
+                        <th class="bg-secondary text-white"></th>
+                    </tr>
+                    @foreach (var actions in item.ctrlMenus.Where(c => c.Name != "DeleteConfirmed"))
+                    {
+                        var menu = menus.FirstOrDefault(x => x.Controller == item.Name && x.Action == actions.Name);
+                        string menuTitle = "";
+                        @if (menu == null)
+                        {
+                            <tr>
+                                <td class="action">@actions.Name</td>
+                                <td class="m-0 p-0">
+                                    @if (actions.Name == "Index")
+                                    { menuTitle = "List of " + item.Name; }
+                                    else if (actions.Name.StartsWith("Get"))
+                                    { menuTitle = actions.Name; }
+                                    else { menuTitle = actions.Name + " " + item.Name; }
+                                    <input type="text" class="form-control form-control-sm title" value="@menuTitle" />
+                                </td>
+                                <td class="m-0 p-0">
+                                    <select class="select form-control category" asp-items="@ViewBag.MenuCategoryId">
+                                        <option>--Select--</option>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input isMenu" />
+
+                                </td>
+                                <td class="m-0 p-0">
+                                    <button type="button" data-controller="@item.Name" class="btn btn-indigo btn-sm save">Save</button>
+
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td class="action">@actions.Name</td>
+                                <td class="m-0 p-0">
+                                    <input type="text" class="form-control form-control-sm title" value="@menu.Title" />
+                                </td>
+                                <td class="m-0 p-0">
+                                    <select class="select form-control category">
+                                        @foreach (var mc in (SelectList)ViewBag.MenuCategoryId)
+                                        {
+                                            bool Selected = (int.Parse(mc.Value) == menu.MenuCategoryId);
+                                            <option selected="@Selected" value="@mc.Value">@mc.Text</option>
+                                        }
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-check-input isMenu" checked="@menu.IsMenu" />
+
+                                </td>
+                                <td class="m-0 p-0">
+                                    <button type="button" data-controller="@item.Name" data-id="@menu.Id" class="btn btn-warning btn-sm save">Save change</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @*<script src="~/js/vendor/forms/selects/select2.min.js"></script>
+        <script src="~/js/form_select2.js"></script>*@
+    @{
+        await Html.RenderPartialAsync("js/_ValidationScriptsPartial");
+    }
+    <script>
+        $('#MenuList').on('click', '.save', function () {
+            var id = $(this).attr('data-id');
+            var currentRow = $(this).closest("tr");
+            var category = currentRow.find(".category").val().trim();
+            var title = currentRow.find(".title").val().trim();
+            var controller = $(this).attr('data-controller');// currentRow.find(".controller").text().trim();
+            var action = currentRow.find(".action").text().trim();
+            var isMenu = currentRow.find(".isMenu").is(":checked");
+
+            if (category != '--Select--' && title != '') {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("saveMenu","Menus")',
+                data: { "Id": id, "menuCategoryId": category, "title": title, "controller": controller, "action": action, "isMenu": isMenu },
+                success: function (data) {
+                    popSuccess("Menu Saved Successfully!")
+                    $(this).parent().find("td").text("Saved");
+                }
+            });
+           }else{
+                popWarning("Please enter menu title and category")
+           }
+        });
+    </script>
+}

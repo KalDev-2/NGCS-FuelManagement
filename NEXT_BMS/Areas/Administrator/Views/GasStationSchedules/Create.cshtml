@@ -1,0 +1,123 @@
+﻿@using Insya.Localization;
+@model NEXT_BMS.Models.GasStationSchedule
+<form asp-action="Create">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline py-2">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="GasStation" class="form-label"></label>
+                        <select asp-for="GasStationId" class="form-control select-search" asp-items="ViewBag.GasStationId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VehicleType" class="form-label"></label>
+                        <select asp-for="VehicleTypeId" class="form-control select-search" asp-items="ViewBag.VehicleTypeId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="FuelType" class="form-label"></label>
+                        <select asp-for="FuelTypeId" class="form-control select-search" asp-items="ViewBag.FuelTypeId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="PlateNumberCategory" class="form-label"></label>
+                        <select asp-for="PlateNumberCategoryId" class="form-control select-search" asp-items="ViewBag.PlateNumberCategoryId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="City" class="form-label"></label>
+                        <select asp-for="CityId" class="form-control select-search" asp-items="ViewBag.CityId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <label asp-for="ScheduleDate" class="form-label"></label>
+                        <input asp-for="ScheduleDate" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="ScheduleDate" class="text-danger"></span>
+                    </div>
+
+                     @* <div class="mb-3">
+                         <label asp-for="ActionBy" class="form-label"></label>
+                         <select asp-for="ActionBy" class="form-control select-search" asp-items="ViewBag.ActionBy">
+                             <option value="">---Select---</option>
+                         </select>
+                     </div> *@
+
+                    <input type="hidden" asp-for="IsActive" value="True" />
+                    <input type="hidden" asp-for="IsDeleted" value="True" />
+                    <input type="hidden" asp-for="ActionBy" value="True" />
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer"></div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_date");}
+    @{await Html.RenderPartialAsync("js/_select2");}
+    @{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        let calendar = $.calendars.instance('ethiopian', 'am');
+        let gcalendar = $.calendars.instance('gregorian', 'en');
+        $('#ScheduleDate').calendarsPicker({
+            calendar: gcalendar
+        });
+
+
+        @if (TempData["Success"] != null)
+        {
+                <script>
+                  Swal.fire({
+                    icon: 'success',
+                    text: '@TempData["Success"]',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    customClass: {popup: 'thin-toast' }
+                    });
+
+                    Swal.fire({
+                    icon: 'error',
+                    text: '@TempData["error"]',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    customClass: {popup: 'thin-toast' }
+                                });
+        </script>
+        }
+
+    </script>
+}

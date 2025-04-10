@@ -1,0 +1,108 @@
+@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @Model.ViewDataTypeName
+@@using Insya.Localization;
+@@{ViewData["id"]=Model.Id;}
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        {
+@:@@{
+    @:Layout = "@Model.LayoutPageFile";
+@:}
+        }
+    }
+    else
+    {
+@:@@{
+    @:Layout = null;
+@:}
+@:<!DOCTYPE html>
+@:<html>
+    @:<head>
+        @:<meta name="viewport" content="width=device-width" />
+        @:<title>@Model.ViewName</title>
+    @:</head>
+    @:<body>
+        }
+@:@@await Html.PartialAsync("Controls/_Common")
+@:<div class="card border-start border-start-width-2 border-start-secondary border-end border-end-width-1 border-end-secondary rounded-0">
+    @:<div class="card-header bg-light header-elements-inline">
+        @:<h5 class="card-title">
+            @:@@Html.Raw(Localization.Get(ViewData["action"].ToString())) | @@Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        @:</h5>
+        @:<div class="header-elements">
+            @:<div class="list-icons">
+                @:<a class="list-icons-item" data-action="collapse"></a>
+                @:<a class="list-icons-item" data-action="reload"></a>
+                @:<a class="list-icons-item" data-action="remove"></a>
+            @:</div>
+        @:</div>
+    @:</div>
+    @:<div class="card-body">
+        @:<div class="row">
+            @:<div class="col-md-6">
+                @:<table class="table table-xs">
+                    Dictionary <string, IPropertyMetadata> propertyLookup = ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+                    Dictionary<string, INavigationMetadata>navigationLookup = ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x => x.AssociationPropertyName, x => x);
+                    foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+                    {
+                        @if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property) && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+                        {
+                    @:<tr>
+                        @:<td>
+                            @:@@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                        @:</td>
+                        @:<th>
+                            @:@@Html.DisplayFor(model => model.@GetValueExpression(property))
+                        @:</th>
+                    @:</tr>
+                        }
+                        else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+                        {
+                    @:<tr>
+                        @:<td>
+                            @:@@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))
+                        @:</td>
+                        @:<th>
+                            @:@@Html.DisplayFor(model => model.@GetValueExpression(navigation).@navigation.DisplayPropertyName)
+                        @:</th>
+                    @:</tr>
+                        }
+                    }
+                @:</table>
+            @:</div>
+        @:</div>
+    @:</div>
+@:</div>
+        if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+        {
+    @:</body>
+@:</html>
+}
+}
+@functions
+{
+    string GetPrimaryKeyName()
+    {
+        return (Model.ModelMetadata.PrimaryKeys != null && Model.ModelMetadata.PrimaryKeys.Length == 1)
+        ? Model.ModelMetadata.PrimaryKeys[0].PropertyName
+        : null;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+}

@@ -1,0 +1,188 @@
+﻿@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@using Humanizer
+@@model @GetEnumerableTypeExpression(Model.ViewDataTypeName)
+@@using Insya.Localization;
+@{
+    string singularWord = Model.ViewDataTypeShortName;
+    string pluralViewDataTypeShortName = singularWord.Pluralize();
+}
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        {
+            @:@@{
+            @:Layout = "@Model.LayoutPageFile";
+            @:}
+        }
+    }
+    else
+    {
+    @:@@{
+    @:Layout = null;
+    @:}
+    @:<!DOCTYPE html>
+    @:<html>
+    @:<head>
+        @:<meta name="viewport" content="width=device-width" />
+        @:<title>@Model.ViewName</title>
+    @:</head>
+    @:<body>
+    }
+@:@@await Html.PartialAsync("Controls/_Common")
+@:<div class="card">
+    @:<div class="card-header bg-light header-elements-inline">
+        @:<h5 class="card-title">
+            @:@@Html.Raw(Localization.Get(ViewData["action"].ToString())) | @@Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        @:</h5>
+        @:<div class="header-elements">
+            @:<div class="list-icons">
+                @:<a class="list-icons-item" data-action="collapse"></a>
+                @:<a class="list-icons-item" data-action="reload"></a>
+                @:<a class="list-icons-item" data-action="remove"></a>
+            @:</div>
+        @:</div>
+    @:</div>
+    @:<div class="card-body p-1">
+        @: <table class="table datatable-init no-footer table-xs table-hover">
+            @:<thead>
+                @:<tr>
+                    Dictionary<string, IPropertyMetadata> propertyLookup = ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+                    Dictionary<string, INavigationMetadata> navigationLookup = ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x => x.AssociationPropertyName, x => x);
+                    @:<th>Id</th>
+                    foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+                    {
+                        if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                                && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+                        {
+                    @:<th>
+                        @:@@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                    @:</th>
+                        }
+                        else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+                        {
+                    @:<th>
+                        @:@@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))
+                    @:</th>
+                        }
+                    }
+                    @:<th class="p-0 nosort text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
+                @:</tr>
+            @:</thead>
+        @:</table>
+    @:</div>
+@:</div>
+@:@@section Scripts {
+    @:@@{await Html.RenderPartialAsync("js/_datatables");}
+    @:<script type="text/javascript">
+        @:$('.datatable-init').DataTable({
+        @:buttons: {
+            @:dom: {
+                @:button: {
+                    @:className: 'btn btn-light'
+                @:}
+            @:},
+            @:buttons: [
+                @:{ extend: 'copy' },
+                @:{ extend: 'csv' },
+                @:{ extend: 'excel' },
+                @:{ extend: 'pdf' },
+                @:{ extend: 'print' }
+            @:]
+        @:},
+        @:"processing": true,
+        @:"serverSide": true,
+        @:"filter": true,
+        @:"ajax": {
+            @:"url": '@@Url.Action("Get@{@pluralViewDataTypeShortName}")',
+            @:"type": "POST",
+            @:"datatype": "json",
+            @:global: false
+        @:},
+        @:"columnDefs": [{
+            @:"targets": [0],
+            @:"visible": false,
+            @:"searchable": false
+            @:},
+            @:{
+            @:"aTargets": ['nosort'],
+            @:"orderable": false,
+            @:"searchable": false
+        @:}],
+        @:"columns": [
+            @:{ "data": "id", "name": "Id", "autoWidth": true },
+            @://{
+                @://"render": function (data, type, row, meta) {
+                    @://return `<a href="/@{@pluralViewDataTypeShortName}/Details/${row.id}" class="text-info-800">${row.name}</a>`;
+                @://}
+            @://},
+        foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+        {
+
+            if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+                && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey)
+            {
+            @:{ "data": "@char.ToLower(GetValueExpression(property)[0])@GetValueExpression(property).Substring(1)", "name": "@GetValueExpression(property)", "autoWidth": true },
+            }
+            else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation))
+            {
+
+            @:{ "data": "@char.ToLower(GetValueExpression(navigation)[0])@GetValueExpression(navigation).Substring(1)", "name": "@GetValueExpression(navigation)", "autoWidth": true },
+            }
+        }
+            @:{
+                @:"render": function (data, type, row, meta) {
+                @:return`<div class="list-icons">
+                            @:<div class="list-icons-item dropdown">
+                                @:<a href="#" class="list-icons-item dropdown-toggle caret-0" data-toggle="dropdown"><i class="icon-menu9"></i></a>
+                                @:<div class="dropdown-menu dropdown-menu-right">
+                                    @:<a href="/@{@pluralViewDataTypeShortName}/Details/${row.id}" class="dropdown-item"><i class="icon-list3"></i>@@Html.Raw(Localization.Get("viewdetails"))</a>
+                                    @:<div class="dropdown-divider"></div>
+                                    @:<a href="/@{@pluralViewDataTypeShortName}/Edit/${row.id}" class="dropdown-item"><i class="icon-pencil7"></i> @@Html.Raw(Localization.Get("edit"))</a>
+                                    @:<a href="/@{@pluralViewDataTypeShortName}/Delete/${row.id}" class="dropdown-item"><i class="icon-cross2"></i> @@Html.Raw(Localization.Get("remove"))</a>
+                                @:</div>
+                            @:</div>
+                        @:</div>`;
+                    @:}
+                @:}
+            @:]
+        @:});
+    @:</script>
+@:}
+    if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+    {
+    @:</body>
+@:</html>
+}
+}
+
+@functions
+{
+    string GetPrimaryKeyName()
+    {
+        return (Model.ModelMetadata.PrimaryKeys != null && Model.ModelMetadata.PrimaryKeys.Length == 1)
+        ? Model.ModelMetadata.PrimaryKeys[0].PropertyName
+        : null;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+
+    string GetEnumerableTypeExpression(string typeName)
+    {
+        return "IEnumerable<" + typeName + ">";
+    }
+}
