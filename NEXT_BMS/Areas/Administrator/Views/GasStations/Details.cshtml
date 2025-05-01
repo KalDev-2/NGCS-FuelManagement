@@ -1,7 +1,20 @@
 ﻿@model NEXT_BMS.Models.GasStation
 @using Insya.Localization;
 @{ViewData["id"]=Model.Id;}
-@await Html.PartialAsync("Controls/_Common")
+ @* @await Html.PartialAsync("Controls/_Common") *@
+
+<div class="sidebar-sticky">
+    <div class="card bg-light fixedcontrolbar shadow-0">
+        <div class="card-header header-elements-inline p-1">
+            <div class="btn-group-sm" role="group" aria-label="First group">
+                <a class="btn btn-info mr-1 legitRipple" href="/Administrator/GasStations">
+                    <span class="icon-arrow-left16"></span> <span class="hidden-xs"><span class="_local" data="backtolist">Backtolist</span></span>
+                </a>
+               
+            </div>
+        </div>
+    </div>
+</div>
 <div class="card border-start border-start-width-2 border-start-secondary border-end border-end-width-1 border-end-secondary rounded-0">
     <div class="card-header bg-light header-elements-inline py-2">
     
