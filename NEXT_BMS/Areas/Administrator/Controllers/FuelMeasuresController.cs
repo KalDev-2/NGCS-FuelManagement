@@ -19,14 +19,14 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
     public class FuelMeasuresController : Controller
     {
         private readonly NEXT_BMSContext _context;
-        public FuelMeasuresController(NEXT_BMSContext context)
+        public FuelMeasuresController(NEXT_BMSContext context) 
         {
             _context = context;
         }
         [HttpPost]
         public IActionResult FuelMeasures ()
         {
-            try
+            try 
             {
                 var draw = Request.Form["draw"].FirstOrDefault();
                 var start = Request.Form["start"].FirstOrDefault();

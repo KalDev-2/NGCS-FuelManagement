@@ -6,13 +6,13 @@
         <h5 class="card-title">
             @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
         </h5>
-        <div class="header-elements">
-            <div class="list-icons">
-                <a class="list-icons-item" data-action="collapse"></a>
-                <a class="list-icons-item" data-action="reload"></a>
-                <a class="list-icons-item" data-action="remove"></a>
-            </div>
-        </div>
+         <div class="header-elements">
+             <div class="list-icons">
+                 <a class="list-icons-item" data-action="collapse"></a>
+                 <a class="list-icons-item" data-action="reload"></a>
+                 <a class="list-icons-item" data-action="remove"></a>
+             </div>
+         </div>
     </div>
     <div class="card-body p-1">
          <table class="table datatable-init no-footer table-xs table-hover">
@@ -33,9 +33,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsDeleted)
-                    </th>
+                    
                     <th class="p-0 nosort text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
                 </tr>
             </thead>
@@ -98,7 +96,7 @@
             { "data": "city", "name": "CityId", "autoWidth": true },
             { "data": "location", "name": "Location", "autoWidth": true },
             { "data": "isActive", "name": "IsActive", "autoWidth": true },
-            { "data": "isDeleted", "name": "IsDeleted", "autoWidth": true },
+           
             
             {
                 "render": function (data, type, row, meta) {

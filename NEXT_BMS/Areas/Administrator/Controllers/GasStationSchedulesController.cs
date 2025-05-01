@@ -62,9 +62,10 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
                 {
                     returnData = returnData.OrderBy(sortColumn + " " + sortColumnDirection);
                 }
-                if (!string.IsNullOrEmpty(searchValue))
+
+                if (searchValue != null)
                 {
-                    returnData = returnData.Where(m => m.VehicleType.Contains(searchValue));
+                    returnData = returnData.Where(m => m.City.Contains(searchValue) || m.FuelType.Contains(searchValue) || m.VehicleType.Contains(searchValue) || m.PlateNumberCategory.Contains(searchValue) || m.GasStation.Contains(searchValue));
                 }
 
                 recordsTotal = returnData.Count(); 
@@ -255,7 +256,7 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        } 
 
         private bool GasStationScheduleExists(int id)
         {
