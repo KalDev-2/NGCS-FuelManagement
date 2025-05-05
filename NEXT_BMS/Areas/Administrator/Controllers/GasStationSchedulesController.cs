@@ -164,6 +164,7 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
                 TempData["Error"] = "The information you're looking for was not found!";
                 return RedirectToAction("Index");
             }
+
             ViewData["ActionBy"] = new SelectList(_context.Users  .Where(x=>x.IsDeleted==false), "Id", "FirstName", gasStationSchedule.ActionBy);
             ViewData["CityId"] = new SelectList(_context.Cities  .Where(x=>x.IsDeleted==false), "Id", "Name", gasStationSchedule.CityId);
             ViewData["FuelTypeId"] = new SelectList(_context.FuelTypes  .Where(x=>x.IsDeleted==false), "Id", "Name", gasStationSchedule.FuelTypeId);
