@@ -79,7 +79,7 @@ nunit-*.xml
 # Visual Studio
 .vs/
 
-NEXT_BMS/wwwroot/
+#NEXT_BMS/wwwroot/
 
 
 # Packages
@@ -106,3 +106,5 @@ _ReSharper*/
 *.dbmdl
 *.bak
 *.tmp
+/NEXT_BMS/wwwroot
+/e
