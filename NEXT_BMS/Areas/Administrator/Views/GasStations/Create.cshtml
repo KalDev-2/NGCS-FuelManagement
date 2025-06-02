@@ -18,24 +18,23 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <!-- Validation summary -->
+                    
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <!-- Name field -->
+                    
                     <div class="mb-4">
                         <label asp-for="Name" class="form-label fw-bold text-primary">Name</label>
                         <input asp-for="Name" class="form-control shadow-sm" autocomplete="off" placeholder="Enter your name" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-
-                    <!-- Location field -->
+                   
                     <div class="mb-4">
                         <label asp-for="Location" class="form-label fw-bold text-primary">Location</label>
                         <input asp-for="Location" class="form-control shadow-sm" autocomplete="off" placeholder="Enter your location" />
                         <span asp-validation-for="Location" class="text-danger"></span>
                     </div>
 
-                    <!-- City dropdown -->
+                   
                     <div class="mb-4">
                         <label asp-for="CityId" class="form-label fw-bold text-primary">City</label>
                         <select asp-for="CityId" class="form-control select-search shadow-sm" asp-items="ViewBag.CityId">
@@ -43,7 +42,7 @@
                         </select>
                     </div>
 
-                    <!-- Hidden fields for IsDeleted and IsActive -->
+                   
                     <input type="hidden" asp-for="IsDeleted" value="False" />
                     <input type="hidden" asp-for="IsActive" value="True" />
 
@@ -51,7 +50,7 @@
             </div>
         </div>
 
-        <!-- Optional: Add custom CSS to enhance the design further -->
+        
         <style>
             .form-label {
                 font-size: 1rem;
