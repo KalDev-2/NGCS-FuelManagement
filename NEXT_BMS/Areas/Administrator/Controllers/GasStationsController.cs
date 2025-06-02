@@ -76,20 +76,13 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             }
         }
 
-        // GET: GasStations
-
        
         public IActionResult Index()
         {  
-            //ViewData["CityId"] = new SelectList(_context.Cities.Where(x => x.IsDeleted == false), "Id", "Name");
+            
             return View();
         }
-        //public async Task<IActionResult> Index()
-        //{
-            //var nEXT_BMSContext = _context.GasStations.Include(g => g.City);
-            //return View(await nEXT_BMSContext.ToListAsync());
-        //}
-
+       
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.GasStations == null)
@@ -99,11 +92,10 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             }
 
             var gasStation = await _context.GasStations
-                //.Include(g => g.
+               
                 .Include(g => g.City)
                 .Include(g => g.GasStationFuelEntries).ThenInclude(g => g.FuelType)
                 .Include(g => g.GasStationFuelEntries).ThenInclude(g => g.ActionByNavigation)
-
                 .Include(g => g.GasStationSchedules)
                 .ThenInclude(g => g.VehicleType)
                 .Include(g => g.GasStationSchedules)
@@ -297,8 +289,7 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       
-
+      
         private bool GasStationExists(int id)
         {
           return _context.GasStations.Any(e => e.Id == id);
