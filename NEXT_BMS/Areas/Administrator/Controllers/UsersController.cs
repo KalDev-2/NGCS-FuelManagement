@@ -175,32 +175,6 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             return View(user);
         }
 
-
-        public ActionResult Create1()
-        {
-           //ViewBag.UserId = new SelectList(_context.Users, "Id", "FullName");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create1([Bind("Id,GenderId,,FirstName,MiddleName,LastName,PhoneNumber,Email,UserName,Password,CreatedDate,LastLogon,FailureCount,BlockEndDate,DefaultLanguageId,IsActive,IsDeleted")] User user)
-        {
-
-
-            if (ModelState.IsValid)
-            {
-                user.Password = Password._one_way_encrypt(user.Password, user.Id);
-                _context.Users.Add(user);
-                _context.SaveChanges();
-				TempData["Success"] = "OSC";
-                return RedirectToAction("Index");
-            }
-           // ViewBag.UserId = new SelectList(_context.Users, "Id", "FullName", user.Id);
-            TempData["Error"] = "erroroccured";
-            return View(user);
-        }
-
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -212,12 +186,13 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
             {
                 return NotFound();
             }
-            //var users = _context.Users.Where(x => x.IsActive).Select(s => new
-            //{
-            //    s.Id,
-            //    Name = $"{s.FirstName} {s.LastName}"
-            //});
-            //ViewBag.EmployeeId = new SelectList(users, "Id", "Name", user.Id);
+            var users = _context.Users.Where(x => x.IsActive).Select(s => new
+            {
+                s.Id,
+                Name = $"{s.FirstName} {s.LastName}"
+            });
+
+            
             return View(user);
         }
 
