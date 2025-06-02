@@ -73,7 +73,7 @@ namespace NEXT_BMS.Areas.Administrator.Controllers
                 return Ok(jsonData);
             }
             catch (Exception)
-            {
+            { 
                 throw;
             }
         }
