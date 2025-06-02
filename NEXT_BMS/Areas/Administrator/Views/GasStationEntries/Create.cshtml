@@ -41,7 +41,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="GasStation" class="form-label fw-bold">Gas Station</label>
+                                <label asp-for="GasStation" class="form-label  fs-5">Gas Station</label>
                                 <select asp-for="GasStationId" class="form-control select-search" asp-items="ViewBag.GasStationId" id="GasStationId">
                                     <option value="">-- Select --</option>
                                 </select>
@@ -50,7 +50,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="FuelType" class="form-label fw-bold">Fuel Type</label>
+                                <label asp-for="FuelType" class="form-label   fs-5">Fuel Type</label>
                                 <select asp-for="FuelTypeId" class="form-control select-search" asp-items="ViewBag.FuelTypeId" id="FuelTypeId">
                                     <option value="">-- Select --</option>
                                 </select>
@@ -61,7 +61,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
-                                <label asp-for="Vehicle.VehicleTypeId" class="form-label fw-bold">Vehicle Type</label>
+                                <label asp-for="Vehicle.VehicleTypeId" class="form-label  fs-5">Vehicle Type</label>
                                 <select asp-for="Vehicle.VehicleTypeId" class="form-control select-search" asp-items="ViewBag.VehicleTypeId" id="VehicleTypeId">
                                     <option value="">-Select-</option>
                                 </select>
@@ -105,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="PlateNumber" class="form-label fw-bold fs-5">Plate Number</label>
+                                <label asp-for="PlateNumber" class="form-label  fs-5">Plate Number</label>
                                 <div class="input-group">
                                     <input asp-for="PlateNumber" class="form-control rounded-start" id="PlateNumber" autocomplete="off" placeholder="Enter Plate Number..." />
                                     <button type="button" class="btn btn-primary" onclick="searchByPlateNumber()">🔍</button>
@@ -116,7 +116,7 @@
 
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label asp-for="Vehicle" class="form-label fw-bold fs-5">Vehicle</label>
+                                <label asp-for="Vehicle" class="form-label  fs-5">Vehicle</label>
                                 <select asp-for="VehicleId" class="form-select select-search" id="VehicleId">
                                     <option value="">-- Select a Vehicle --</option>
                                 </select>
@@ -127,7 +127,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-4">
-                                <label asp-for="Quantity" class="form-label fw-bold fs-5">Quantity</label>
+                                <label asp-for="Quantity" class="form-label  fs-5">Quantity</label>
                                 <input asp-for="Quantity" type="number" class="form-control" min="1" autocomplete="off" placeholder="Enter quantity..." />
                                 <span asp-validation-for="Quantity" class="text-danger"></span>
                             </div>
@@ -149,9 +149,7 @@
                 </div>
             </form>
         </div>
-
-
-
+ 
 </div>
 
 
