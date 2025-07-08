@@ -1,0 +1,151 @@
+﻿@using Insya.Localization;
+@model FCS.Models.User
+@*@{
+    ViewBag.Title = "User";
+    ViewBag.PageDescription = "Delete";
+}*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+   @await Html.PartialAsync("Controls/_Common")
+
+}
+
+<div class="card">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+           @Html.Raw(Localization.Get("Delete")) | @Html.Raw(Localization.Get("User"))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div>
+            <div class="alert alert-danger alert-arrow-left alert-styled-left alpha-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+                @Html.Raw(Localization.Get("areyousure"))
+            </div>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.Raw(Localization.Get("FullName"))
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.FirstName)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("MobileNumber"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("Email"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("UserName"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserName)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-3">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.Raw(Localization.Get("CreatedDate"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.CreatedDate)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("LastLogon"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.LastLogin)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("FailureCount"))
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.FailureCount)
+                        </dd>
+
+                        <dt>
+                            @Html.Raw(Localization.Get("BlockEndDate"))
+                        </dt>
+
+                        <dd>
+                            @if (Model.BlockEndDate == null)
+                            {
+                                <i class="icon-minus2"></i>                            <i class="icon-minus2"></i>          }
+                            else
+                            {
+                                @Html.DisplayFor(model => model.BlockEndDate)
+                            }
+
+                        </dd>
+                    </dl>
+                </div>
+                <div class="col-auto">
+                    <dl>
+                        <dt>
+                            @Html.Raw(Localization.Get("Status"))
+                        </dt>
+
+                        <dd>
+                            @if (Model.IsActive)
+                            {
+                                <a href="#" class="badge bg-success dropdown-toggle" data-toggle="dropdown">Active</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="@Url.Action("Block","Users",new{Id=Model.Id })" class="dropdown-item"><span class="badge badge-mark mr-2 bg-danger border-danger"></span> Block</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <a href="#" class="badge bg-danger dropdown-toggle" data-toggle="dropdown">Blocked</a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="@Url.Action("Activate","Users",new{Id=Model.Id })" class="dropdown-item"><span class="badge badge-mark mr-2 bg-success border-success"></span> Activate</a>
+                                </div>
+                            }
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Password)
+                        </dt>
+                        <dd>
+                            <a href="@Url.Action("ResendPasswordToEmail", "Users",new { Id=Model.Id})">Resend password</a>
+                        </dd>
+                    </dl>
+                </div>
+
+            </div>
+	</div><!-- /.box-body -->
+</div>
+<div class="card-footer">
+        
+ </div>
+</div>
+

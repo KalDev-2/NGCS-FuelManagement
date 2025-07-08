@@ -1,0 +1,98 @@
+﻿@using Insya.Localization;
+@model FCS.Models.GasStation
+<form asp-action="Create">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card">
+        <div class="card-header bg-light header-elements-inline py-2">
+            <h5 class="card-title">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            @* <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div> *@
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label fw-bold text-primary">Name</label>
+                        <input asp-for="Name" class="form-control shadow-sm" autocomplete="off" placeholder="Enter your name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="mb-4">
+                        <label asp-for="Location" class="form-label fw-bold text-primary">Location</label>
+                        <input asp-for="Location" class="form-control shadow-sm" autocomplete="off" placeholder="Enter your location" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                   
+                    <div class="mb-4">
+                        <label asp-for="CityId" class="form-label fw-bold text-primary">City</label>
+                        <select asp-for="CityId" class="form-control select-search shadow-sm" asp-items="ViewBag.CityId">
+                            <option value="">---Select---</option>
+                        </select>
+                    </div>
+
+                   
+                    <input type="hidden" asp-for="IsDeleted" value="False" />
+                    <input type="hidden" asp-for="IsActive" value="True" />
+
+                </div>
+            </div>
+        </div>
+
+        
+        <style>
+            .form-label {
+                font-size: 1rem;
+                font-weight: bold;
+            }
+
+            .form-control {
+                border-radius: 8px;
+                padding: 0.8rem;
+            }
+
+                .form-control:focus {
+                    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+                    border-color: #007bff;
+                }
+
+            .card-body {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 2rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.5rem;
+            }
+
+            .text-primary {
+                color: #007bff;
+            }
+
+            .select-search {
+                background-color: #ffffff;
+            }
+        </style>
+
+        <div class="card-footer"></div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("js/_select2");}
+    @{await Html.RenderPartialAsync("js/_ValidationScriptsPartial");}
+    <script type="text/javascript">
+    </script>
+}

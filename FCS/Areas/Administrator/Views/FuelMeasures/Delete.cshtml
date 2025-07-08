@@ -1,0 +1,94 @@
+﻿@model FCS.Models.FuelMeasure
+@using Insya.Localization;
+@{ViewData["id"]=Model.Id;}
+@await Html.PartialAsync("Controls/_Common")
+<div class="card border-start border-start-width-2 border-start-secondary border-end border-end-width-1 border-end-secondary rounded-0">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+        <div class="header-elements">
+            <div class="list-icons">
+                <a class="list-icons-item" data-action="collapse"></a>
+                <a class="list-icons-item" data-action="reload"></a>
+                <a class="list-icons-item" data-action="remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger">
+            <span class="fw-semibold">Deleting!</span> Are you sure you want to delete this?
+            <i class="ph-x-circle float-end ms-2"></i>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-xs">
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.Quantity)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Date)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.Date)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.IsActive)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.IsDeleted)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.IsDeleted)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ActionByNavigation)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.ActionByNavigation.FirstName)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ApprovedByNavigation)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.ApprovedByNavigation.FirstName)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.FuelType)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.FuelType.Name)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.GasStation)
+                        </td>
+                        <th>
+                            @Html.DisplayFor(model => model.GasStation.Location)
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

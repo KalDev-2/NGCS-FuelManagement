@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "4S ERP",
+    "alerts": {
+      "success": "Success",
+      "info": "Information",
+      "warning": "Warning",
+      "error": "Error"
+    },
+    "user": {
+      "users": "Users",
+      "user": "User",
+      "login": "Login",
+      "logout": "Logout",
+      "username": "መግብያ ስም",
+      "password": "የይለፍ ቃል",
+      "logintoyouraccount": "ወደ አካዉንትዎ መግብያ።",
+      "enteryourcredentialsbelow": "የግል መግብያ ሚስጥር መረጃዎን ያስገቡ።",
+      "signin": "ይግቡ",
+       "forgotpassword": "የይለፍ ቃል ከረሱ"
+    }
+  }
+
+}

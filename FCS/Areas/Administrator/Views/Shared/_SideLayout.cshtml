@@ -1,0 +1,345 @@
+﻿@using Insya.Localization
+@using Microsoft.Extensions.Options
+@using FCS.ViewModels;
+@using FCS.Utilities
+@inject IOptions<AppConfig> AppConfig
+@inject IHtmlHelper Html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @await Html.PartialAsync("~/Areas/Administrator/Views/Shared/Components/_Header.cshtml")
+</head>
+<body class="navbar-top sidebar-secondary-hidden">
+    <div class="navbar navbar-expand-md navbar-dark fixed-top @AppConfig.Value.BrandColor">
+        <div class="navbar-brand">
+            <a href="/" class="d-inline-block">
+                <img src="~/Content/img/@AppConfig.Value.LogoUrl" alt="">
+            </a>
+        </div>
+        <div class="d-md-none">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+                <i class="icon-menu2"></i>
+            </button>
+            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+                <i class="icon-paragraph-justify3"></i>
+            </button>
+            <button class="navbar-toggler sidebar-mobile-secondary-toggle" type="button">
+                <i class="icon-cube3"></i>
+            </button>
+
+            <button class="navbar-toggler sidebar-mobile-component-toggle" type="button">
+                <i class="icon-unfold"></i>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-mobile">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+                        <i class="icon-paragraph-justify3"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="navbar-nav-link sidebar-control sidebar-secondary-toggle d-none d-md-block">
+                        <i class="icon-cube3"></i>
+                    </a>
+                </li>
+            </ul>
+            <span class=" ml-md-3 mr-md-auto"></span>
+            @*<partial name="Components/_Languages" />*@
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a href="#" class="navbar-nav-link" data-toggle="dropdown">
+                        <i class="icon-comment-discussion"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+                        <div class="dropdown-content-header">
+                            <span class="font-size-sm line-height-sm text-uppercase font-weight-semibold">Latest notifications</span>
+                            <a href="#" class="text-default"><i class="icon-search4 font-size-base"></i></a>
+                        </div>
+
+                        <div class="dropdown-content-footer bg-light">
+                            <a href="#" class="font-size-sm line-height-sm text-uppercase font-weight-semibold text-grey mr-auto">All activity</a>
+                            <div>
+                                <a href="#" class="text-grey" data-popup="tooltip" title="Clear list"><i class="icon-checkmark3"></i></a>
+                                <a href="#" class="text-grey ml-2" data-popup="tooltip" title="Settings"><i class="icon-gear"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Logout", "Account", new {area=""})" class="navbar-nav-link">
+                        <i class="icon-switch2"></i>
+                        <span class="d-md-none ml-2">@Html.Raw(Localization.Get("logout"))</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- /main navbar -->
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main sidebar -->
+        <div class="sidebar sidebar-light sidebar-main sidebar-expand-md sidebar-fixed">
+            <!-- Sidebar mobile toggler -->
+            <div class="sidebar-mobile-toggler text-center">
+                <a href="#" class="sidebar-mobile-main-toggle">
+                    <i class="icon-arrow-left8"></i>
+                </a>
+                @Html.Raw(Localization.Get("navigation"))
+                <a href="#" class="sidebar-mobile-expand">
+                    <i class="icon-screen-full"></i>
+                    <i class="icon-screen-normal"></i>
+                </a>
+            </div>
+            <!-- /sidebar mobile toggler -->
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+                <!-- User menu -->
+                <div class="sidebar-user-material">
+                    <div class="sidebar-user-material-body @AppConfig.Value.BrandColor">
+                        <div class="card-body text-center">
+                            <a href="#">
+                                @{
+                                    string photoUrl = Context.Session.GetString("PhotoUrl");
+                                    string fullName = Context.Session.GetString("FullName");
+                                    string roleName = Context.Session.GetString("RoleName");
+                                }
+                                <img src="@Url.Content(photoUrl)" class="img-fluid rounded-circle shadow-1 mb-1" width="40" height="80" alt="">
+                            </a>
+                            <h6 class="mb-0 text-white text-shadow-dark">@fullName</h6>
+                            <span class="font-size-sm text-white text-shadow-dark d-none">@roleName</span>
+                        </div>
+
+                        <div class="sidebar-user-material-footer">
+                            <a href="#user-nav" class="d-flex justify-content-between align-items-center text-shadow-dark dropdown-toggle" data-toggle="collapse"><span>@Html.Raw(Localization.Get("myaccount"))</span></a>
+                        </div>
+                    </div>
+                    <div class="collapse" id="user-nav">
+                        <ul class="nav nav-sidebar">
+                            <li class="nav-item">
+                                <a href="@Url.Action("MyProfile","Home")" class="nav-link">
+                                    <i class="icon-user-plus"></i>
+                                    <span>@Html.Raw(Localization.Get("myprofile"))</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="icon-comment-discussion"></i>
+                                    <span>@Html.Raw(Localization.Get("messages"))</span>
+                                    <span class="badge bg-teal-400 badge-pill align-self-center ml-auto">0</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("ChangePassword","Home")" class="nav-link">
+                                    <i class="icon-cog5"></i>
+                                    <span>@Html.Raw(Localization.Get("accountsettings"))</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="@Url.Action("Logout", "Account", new {area=""})" class="nav-link">
+                                    <i class="icon-switch2"></i>
+                                    <span>@Html.Raw(Localization.Get("logout"))</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /user menu -->
+                <!-- Main navigation -->
+
+                <div class="card card-sidebar-mobile">
+                    <ul class="nav nav-sidebar" data-nav-type="accordion">
+                        <!-- Main -->
+
+                        @await Html.PartialAsync("~/Areas/Administrator/Views/Shared/Components/_SelectedObjectDetail.cshtml")
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("MySideMenu")))
+                        {
+                            if (Context.Session.GetInt32("BaseMenuTypeId") != Context.Session.GetInt32("MenuTypeId"))
+                            {
+
+                                string sidemenu = await Html.RenderPartialViewToStringAsync("Menus/_Side", null);
+                                Context.Session.SetString("MySideMenu", sidemenu);
+                                Context.Session.SetInt32("BaseMenuTypeId", (int)Context.Session.GetInt32("MenuTypeId"));
+                            }
+                        }
+                        else
+                        {
+                            string sidemenu = await Html.RenderPartialViewToStringAsync("Menus/_Side", null);
+                            Context.Session.SetString("MySideMenu", sidemenu);
+                        }
+                        @Html.Raw(Context.Session.GetString("MySideMenu"))
+
+                        <!-- /main -->
+                    </ul>
+                </div>
+                <!-- /main navigation -->
+            </div>
+            <!-- /sidebar content -->
+
+        </div>
+        <!-- /main sidebar -->
+        <!-- Secondary sidebar -->
+        <div class="sidebar sidebar-light sidebar-secondary sidebar-expand-md">
+            <!-- Sidebar mobile toggler -->
+            <div class="sidebar-mobile-toggler bg-slate-800 text-center">
+                <a href="#" class="sidebar-mobile-secondary-toggle">
+                    <i class="icon-arrow-left8"></i>
+                </a>
+                <span class="font-weight-semibold">@Html.Raw(Localization.Get("selectanapplication"))</span>
+                <a href="#" class="sidebar-mobile-expand">
+                    <i class="icon-screen-full"></i>
+                    <i class="icon-screen-normal"></i>
+                </a>
+            </div>
+            <!-- /sidebar mobile toggler -->
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+                <!-- Sidebar tabs -->
+                <div class="sortable">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="nav-item">
+                            <a href="#components-tab" class="nav-link active" data-toggle="tab">
+                                <i class="icon-grid-alt"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#forms-tab" class="nav-link" data-toggle="tab">
+                                <i class="icon-menu6"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="components-tab">
+                            <!-- Block buttons -->
+                            <div class="card">
+                                <div class="card-header bg-transparent header-elements-inline">
+                                    <span class="text-uppercase font-size-sm font-weight-semibold">Available Applications</span>
+                                    <div class="header-elements">
+                                        <div class="list-icons">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    @if (string.IsNullOrEmpty(Context.Session.GetString("AppDisplay")))
+                                    {
+                                        string sideApps = await Html.RenderPartialViewToStringAsync("Menus/_SideApps", null);
+                                        Context.Session.SetString("AppDisplay", sideApps);
+                                    }
+                                    @Html.Raw(Context.Session.GetString("AppDisplay"))
+
+                                </div>
+                            </div>
+                            <!-- /block buttons -->
+
+                        </div>
+                        <div class="tab-pane fade" id="forms-tab">
+                            <!-- Sub navigation -->
+                            <div class="card mb-2">
+                                <div class="card-header bg-transparent header-elements-inline">
+                                    <span class="text-uppercase font-size-sm font-weight-semibold">Available Applications</span>
+                                    <div class="header-elements">
+                                        <div class="list-icons">
+                                            <a class="list-icons-item" data-action="collapse"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+
+                                    @if (string.IsNullOrEmpty(Context.Session.GetString("AppDisplayList")))
+                                    {
+                                        string sideAppslist = await Html.RenderPartialViewToStringAsync("Menus/_SideAppslist", null);
+                                        Context.Session.SetString("AppDisplayList", sideAppslist);
+                                    }
+                                    @Html.Raw(Context.Session.GetString("AppDisplayList"))
+                                </div>
+                            </div>
+                            <!-- /sub navigation -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /sidebar content -->
+        </div>
+        <!-- /secondary sidebar -->
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <!-- Page header -->
+            @await Html.PartialAsync("~/Areas/Administrator/Views/Shared/Components/_PageInfo.cshtml")
+            <!-- /page header -->
+            <!-- Content area -->
+            <div class="content">
+                @await Html.PartialAsync("~/Areas/Administrator/Views/Shared/Components/_Alerts.cshtml")
+                @RenderBody()
+
+                <!-- /info alert -->
+            </div>
+            <!-- /content area -->
+            <!-- Footer -->
+            @await Html.PartialAsync("~/Areas/Administrator/Views/Shared/Components/_Footer.cshtml")
+            <!-- /footer -->
+        </div>
+        <!-- /main content -->
+    </div>
+    <!-- /page content -->
+    <partial name="Components/_Popup" />
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/Content/global/js/plugins/ui/perfect_scrollbar.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("._local").each(function () {
+                $(this).removeClass("icon-check");
+            });
+        });
+        $(document).ajaxStart(function () {
+            $.blockUI({
+                message: '<i class="icon-spinner4 spinner"></i> Please Wait...',
+                overlayCSS: {
+                    backgroundColor: '#1b2024',
+                    opacity: 0.8,
+                    cursor: 'wait'
+                },
+                css: {
+                    border: 0,
+                    color: '#fff',
+                    padding: 0,
+                    backgroundColor: 'transparent'
+                }
+            });
+        }).ajaxComplete(function () {
+            $.unblockUI();
+        }).ajaxError(function () {
+            popError('Some error occured while sending your request');
+            $.unblockUI();
+        });
+
+        function popError(n) {
+            new PNotify({
+                title: 'Error!',
+                text: n,
+                addclass: 'alert alert-styled-left',
+                type: 'danger'
+            });
+        }
+        function popSuccess(n) {
+            new PNotify({
+                title: 'Success!',
+                text: n,
+                addclass: 'alert alert-styled-left',
+                type: 'success'
+            });
+        }
+        function popWarning(n) {
+            new PNotify({
+                title: 'Attention',
+                text: n,
+                addclass: 'alert alert-styled-left',
+                type: 'warning'
+            });
+        }
+    </script>
+</body>
+</html>

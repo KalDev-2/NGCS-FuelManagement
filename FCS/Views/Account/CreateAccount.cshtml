@@ -1,0 +1,155 @@
+﻿@model FCS.Models.User
+@{
+    ViewData["Title"] = "Create Account";
+    Layout = "_Layout_Account";
+}
+
+<style>
+    body {
+        background-color: #f9f9f9;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+        background-color: #ffffff;
+        padding: 3rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-title {
+        font-weight: 600;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: #222;
+    }
+
+    .form-subtext {
+        color: #888;
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 0.3rem;
+    }
+
+    .form-control {
+        border-radius: 0.7rem;
+        border: 1px solid #e0e0e0;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        box-shadow: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #007aff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+
+    .btn-submit {
+        background-color: #007aff;
+        color: white;
+        border: none;
+        border-radius: 0.7rem;
+        padding: 0.75rem;
+        width: 100%;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background-color: #005bb5;
+    }
+
+    .form-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .form-footer a {
+        color: #007aff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .form-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="form-container">
+        <h2 class="form-title">Create Your Account</h2>
+        <p class="form-subtext">Fill in your details to get started</p>
+
+        <form asp-action="CreateAccount" asp-controller="Account" method="post">
+            <div class="mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" name="firstName" class="form-control" placeholder="John" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Middle Name</label>
+                <input type="text" name="middleName" class="form-control" placeholder="A." required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="lastName" class="form-control" placeholder="Doe" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="userName" class="form-control" placeholder="johndoe123" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="text" name="phoneNumber" class="form-control" placeholder="+123456789" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control" placeholder="you@example.com" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select asp-for="GenderId" class="form-control" asp-items="ViewBag.GenderId" required></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Preferred Language</label>
+                <select asp-for="LanguageId" class="form-control" asp-items="ViewBag.LanguageId" required></select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirmPassword" class="form-control" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+
+        <div class="card-footer text-center py-3">
+            <div class="small"><a asp-action="LogIn"
+                   asp-controller="Account">Already have an account? Sign in!</a>
+            </div>
+        </div>
+
+    </div>
+</div>

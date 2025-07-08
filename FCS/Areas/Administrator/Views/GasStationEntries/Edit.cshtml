@@ -1,0 +1,114 @@
+﻿@using Insya.Localization;
+@model FCS.Models.GasStationEntry
+
+<form asp-action="Edit">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card shadow-sm">
+        <div class="card-header bg-light header-elements-inline py-3">
+            <h5 class="text-primary card-title" style="font-size: 1.5rem; ">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body bg-light rounded p-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label asp-for="VehicleId" class="form-label fs-7">@Html.DisplayNameFor(model => model.Vehicle)</label>
+                        <select asp-for="VehicleId" class="form-control select2" asp-items="ViewBag.VehicleId">
+                            <option value="">---Select---</option>
+                        </select>
+                        <span asp-validation-for="VehicleId" class="text-danger"></span>
+                    </div>
+
+                   
+                    <div class="form-group mb-3">
+                        <label asp-for="GasStationId" class="form-label fs-7">@Html.DisplayNameFor(model => model.GasStation)</label>
+                        <select asp-for="GasStationId" class="form-control select2" asp-items="ViewBag.GasStationId">
+                            <option value="">---Select---</option>
+                        </select>
+                        <span asp-validation-for="GasStationId" class="text-danger"></span>
+                    </div>
+
+                   
+                    <div class="form-group mb-3">
+                        <label asp-for="FuelTypeId" class="form-label fs-7">@Html.DisplayNameFor(model => model.FuelType)</label>
+                        <select asp-for="FuelTypeId" class="form-control select2" asp-items="ViewBag.FuelTypeId">
+                            <option value="">---Select---</option>
+                        </select>
+                        <span asp-validation-for="FuelTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+
+               
+                <div class="col-md-6">
+                   
+                    <div class="form-group mb-3">
+                        <label asp-for="PlateNumber" class="form-label fs-7">@Html.DisplayNameFor(model => model.PlateNumber)</label>
+                        <input asp-for="PlateNumber" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="PlateNumber" class="text-danger"></span>
+                    </div>
+
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="EntryDate" class="form-label fs-7">@Html.DisplayNameFor(model => model.EntryDate)</label>
+                        <input asp-for="EntryDate" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="EntryDate" class="text-danger"></span>
+                    </div>
+
+                   
+                    <div class="form-group mb-3">
+                        <label asp-for="Quantity" class="form-label fs-7">@Html.DisplayNameFor(model => model.Quantity)</label>
+                        <input asp-for="Quantity" class="form-control" autocomplete="off" />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+
+                    
+                    @* <div class="form-check mb-3">
+                        <input class="form-check-input" asp-for="IsActive" id="IsActive" type="checkbox" />
+                        <label class="form-check-label" for="IsActive">@Html.DisplayNameFor(model => model.IsActive)</label>
+                    </div> *@
+
+                  
+                    <div class="d-grid d-md-flex justify-content-md-end">
+                        <div class="mb-2 mt-2">
+                            <button type="submit" class="btn btn-info w-100 w-md-auto px-4 py-2 fs-5">Save</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("js/_date");
+    }
+    @{
+        await Html.RenderPartialAsync("js/_select2");
+    }
+    @{
+        await Html.RenderPartialAsync("js/_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript">
+        let calendar = $.calendars.instance('ethiopian', 'am');
+        let gcalendar = $.calendars.instance('gregorian', 'en');
+        $('#EntryDate').calendarsPicker({
+            calendar: gcalendar
+        });
+    </script>
+}

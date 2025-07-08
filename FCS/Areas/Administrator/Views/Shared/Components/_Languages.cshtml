@@ -1,0 +1,30 @@
+﻿@using Insya.Localization
+@using System.Text.Json;
+@using System.Linq;
+<ul class="navbar-nav ml-md-auto language-switch">
+    @if (Context.Session.GetString("languages") != null)
+    {
+        var languages = GetLanguage();
+        foreach (var language in languages)
+        {
+            <li class="nav-item">
+                <a href="@Url.Action("ChangeLang","Localizations",new {languageId=language.Id, Code=language.Code})" class="navbar-nav-link">
+                    @language.Name
+                </a>
+            </li>
+        }
+    }
+</ul>
+
+@functions {
+    private List<FCS.Models.Language> GetLanguage()
+    {
+        var languageJson = Context.Session.GetString("languages");
+        if (string.IsNullOrEmpty(languageJson))
+        {
+            return new List<FCS.Models.Language>();
+        }
+        var languages = JsonSerializer.Deserialize<List<FCS.Models.Language>>(languageJson);
+        return languages.Where(x => x.IsActive).Distinct().ToList();
+    }
+}

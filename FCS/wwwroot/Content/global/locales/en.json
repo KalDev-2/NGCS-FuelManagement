@@ -1,0 +1,24 @@
+{
+  "app": {
+    "name": "4S ERP",
+    "alerts": {
+      "success": "Success",
+      "info": "Information",
+      "warning": "Warning",
+      "error": "Error"
+    },
+    "user": {
+      "users": "Users",
+      "user": "User",
+      "login": "Login",
+      "logout": "Logout",
+      "username": "Username",
+      "password": "Password",
+      "logintoyouraccount": "Login to your account",
+      "enteryourcredentialsbelow": "Enter your credentials below",
+      "signin": "Sign In",
+       "forgotpassword": "Forgot password?"
+    }
+  }
+
+}

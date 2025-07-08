@@ -1,0 +1,110 @@
+﻿@using Insya.Localization;
+@model FCS.Models.GasStation
+<form asp-action="Edit">
+    @await Html.PartialAsync("Controls/_Common")
+    <div class="card border-light shadow-sm">
+        <div class="card-header bg-light header-elements-inline">
+            <h5 class="card-title fw-bold text-primary">
+                @Html.Raw(Localization.Get(ViewData["action"].ToString())) | @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+            </h5>
+            <div class="header-elements">
+                <div class="list-icons">
+                    <a class="list-icons-item" data-action="collapse"></a>
+                    <a class="list-icons-item" data-action="reload"></a>
+                    <a class="list-icons-item" data-action="remove"></a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Validation summary -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Hidden Id field -->
+                    <input type="hidden" asp-for="Id" />
+
+                    <!-- Form Fields -->
+                    <!-- Gas Station Name -->
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label fw-bold text-primary">Gas Station Name</label>
+                        <input asp-for="Name" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Gas Station Name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="mb-4">
+                        <label asp-for="Location" class="form-label fw-bold text-primary">Location</label>
+                        <input asp-for="Location" class="form-control shadow-sm" autocomplete="off" placeholder="Enter Location" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <!-- Select City -->
+                    <div class="mb-4">
+                        <label asp-for="CityId" class="form-label fw-bold text-primary">Select City</label>
+                        <select asp-for="CityId" class="form-control select-search shadow-sm" asp-items="ViewBag.CityId">
+                            <option value="">---Select---</option>
+                        </select>
+                        <span asp-validation-for="CityId" class="text-danger"></span>
+                    </div>
+
+                    <!-- Hidden Fields for IsDeleted and IsActive -->
+                    <input type="hidden" asp-for="IsDeleted" value="False" />
+                    <input type="hidden" asp-for="IsActive" value="True" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional: Add custom CSS to enhance the design further -->
+        <style>
+            .form-label {
+                font-size: 1rem;
+                font-weight: bold;
+            }
+
+            .form-control {
+                border-radius: 8px;
+                padding: 0.8rem;
+            }
+
+                .form-control:focus {
+                    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+                    border-color: #007bff;
+                }
+
+            .card-body {
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                padding: 2rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.5rem;
+            }
+
+            .text-primary {
+                color: #007bff;
+            }
+
+            .select-search {
+                background-color: #ffffff;
+            }
+        </style>
+
+         @* <div class="card-footer text-end">
+             <button type="submit" class="btn btn-success btn-lg px-4 py-2">Save Changes</button>
+         </div> *@
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("js/_select2");
+    }
+    @{
+        await Html.RenderPartialAsync("js/_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        // Optional: Custom JS for additional behavior
+    </script>
+}

@@ -1,0 +1,157 @@
+﻿@model FCS.Models.FuelMeasure
+@using Insya.Localization;
+@using Microsoft.Extensions.Options
+@using FCS.ViewModels;
+@inject IOptions<AppConfig> AppConfig
+
+@{
+    ViewData["id"] = Model.Id;
+    var userRole = Context.Session.GetString("RoleName");
+}
+
+<div class="sidebar-sticky">
+    <div class="card bg-light fixedcontrolbar shadow-0">
+        <div class="card-header header-elements-inline p-1">
+            <div class="btn-group-sm" role="group" aria-label="First group">
+                <a class="btn btn-info mr-1 legitRipple" href="/Administrator/FuelMeasures">
+                    <span class="icon-arrow-left16"></span> <span class="hidden-xs"><span class="_local" data="backtolist">backtolist</span></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-start border-start-width-2 border-start-secondary border-end border-end-width-1 border-end-secondary rounded-0">
+    <div class="card-header bg-light header-elements-inline">
+        <h5 class="card-title">
+            @Html.Raw(Localization.Get(ViewData["action"].ToString())) |
+            @Html.Raw(Localization.Get(ViewData["pageName"].ToString()))
+        </h5>
+       
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-xs">
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.FuelType)</td>
+                        <th>@Html.DisplayFor(model => model.FuelType.Name)</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.GasStation)</td>
+                        <th>@Html.DisplayFor(model => model.GasStation.Name)</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Quantity)</td>
+                        <th>@Html.DisplayFor(model => model.Quantity)</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Date)</td>
+                        <th>@Html.DisplayFor(model => model.Date)</th>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.ActionByNavigation)</td>
+                        <th>@Html.DisplayFor(model => model.ActionByNavigation.FirstName)</th>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <table class="table table-xs">
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.IsActive)</td>
+                        <th>@Html.DisplayFor(model => model.IsActive)</th>
+                    </tr>
+
+
+                    @* Display approval details only if approved *@
+                    @if (Model.ApprovedBy != null)
+
+
+                    {
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.ApprovedByNavigation)</td>
+                            <th>@Html.DisplayFor(model => model.ApprovedByNavigation.FirstName)</th>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.ApprovedDate)</td>
+                            <th>@Html.DisplayFor(model => model.ApprovedDate)</th>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Remark)</td>
+                            <th>@Html.DisplayFor(model => model.Remark)</th>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @* Approve button only visible to Admin and if not already approved *@
+    @if (userRole == "Admin" && Model.ApprovedBy == null)
+
+    {
+        <form asp-action="Approve" asp-controller="FuelMeasures" method="post">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="Quantity" value="@Model.Quantity" />
+            <input type="hidden" name="Date" value="@Model.Date" />
+            <input type="hidden" name="IsActive" value="@Model.IsActive" />
+            <input type="hidden" name="IsDeleted" value="@Model.IsDeleted" />
+            <input type="hidden" name="FuelTypeId" value="@Model.FuelTypeId" />
+            <input type="hidden" name="GasStationId" value="@Model.GasStationId" />
+            <input type="hidden" name="Remark" value="@Model.Remark" />
+
+            <button type="button" class="btn btn-sm btn-outline-success mt-2" data-toggle="modal" data-target="#modal_approveFuelMeasure" style="position: absolute; bottom: 10px; right: 10px; z-index: 10;">
+                <i class="icon-checkmark3 mr-1"></i> @Html.Raw(Localization.Get("Approve"))
+            </button>
+        </form>
+    }
+
+
+    else if (Model.ApprovedBy == null)
+
+
+    {
+        <p class="text-muted mt-2">Only admins can approve fuel entries.</p>
+    }
+
+</div>
+
+<div id="modal_approveFuelMeasure" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header mt-0 @AppConfig.Value.BrandColor">
+                <h4 class="modal-title">
+                    @Html.Raw(Localization.Get("Approve Fuel Measure"))
+                </h4>
+                <a href="#" class="pt-2" data-dismiss="modal">
+                    <i class="icon-cross text-white"></i>
+                </a>
+            </div>
+
+            <form asp-action="Approve" asp-controller="FuelMeasures" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="@Model.Id" />
+
+                    <div class="form-group">
+                        <label>@Html.Raw(Localization.Get("Remark"))</label>
+                        <textarea name="Remark" class="form-control" rows="3" placeholder="Enter remark..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-link" data-dismiss="modal">
+                        <i class="icon-cross2 font-size-base mr-1"></i> @Html.Raw(Localization.Get("Close"))
+                    </button>
+                    <button type="submit" class="btn bg-primary">
+                        <i class="icon-checkmark3 font-size-base mr-1"></i> @Html.Raw(Localization.Get("Approve"))
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
